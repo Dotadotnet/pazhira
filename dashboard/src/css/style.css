@@ -125,13 +125,13 @@ input {
 [type="number"],
 [type="tel"],
 [type="search"] {
-  @apply form-input rounded text-sm;
+  @apply  rounded text-sm;
 }
 
 input,
 textarea,
 select {
-  @apply focus:!ring-0 focus:!outline-0 focus:!outline-offset-0 focus:!border-[#6fd1f9];
+  @apply focus:ring-0 focus:outline-0 focus:outline-offset-0 focus:border-[#6fd1f9];
 }
 
 textarea {

@@ -3,6 +3,7 @@ import Dropdown from "@/components/shared/dropDown/Dropdown";
 import { Controller, useFieldArray } from "react-hook-form";
 import Trash from "@/components/icons/Trash";
 import NumberToPersianWord from "number_to_persian_word";
+import FeatureInput from "./featureInput";
 
 // کامپوننت UnitPrice
 const UnitPrice = ({
@@ -20,30 +21,30 @@ const UnitPrice = ({
   shipmentMethodOptions = [],
   creatorOptions = []
 }) => {
-  const {
-    fields: badges,
-    append,
-    remove: removeBadge
-  } = useFieldArray({
-    control,
-    name: `variations.${index}.variant_badges`
-  });
+  // const {
+  //   fields: badges,
+  //   append,
+  //   remove: removeBadge
+  // } = useFieldArray({
+  //   control,
+  //   name: `variations.${index}.variant_badges`
+  // });
 
   const campaignState = watch(`variations.${index}.campaignState`);
   const statusOptions = [
-    { value: "marketable", label: "قابل فروش" },
-    { value: "out_of_stock", label: "تمام شده" },
-    { value: "inactive", label: "غیرفعال" },
-    { value: "on_sale", label: "در حال فروش" },
-    { value: "new_arrival", label: "جدید" },
-    { value: "discount", label: "تخفیف‌دار" }
+    { id: "marketable", value: "قابل فروش" },
+    { id: "out_of_stock", value: "تمام شده" },
+    { id: "inactive", value: "غیرفعال" },
+    { id: "on_sale", value: "در حال فروش" },
+    { id: "new_arrival", value: "جدید" },
+    { id: "discount", value: "تخفیف‌دار" }
   ];
-const badgeSlotOptions = [
-  { value: "topRightCorner", label: "گوشه بالا-راست" },
-  { value: "topLeftCorner", label: "گوشه بالا-چپ" },
-  { value: "bottomRightCorner", label: "گوشه پایین-راست" },
-  { value: "bottomLeftCorner", label: "گوشه پایین-چپ" }
-];
+  const badgeSlotOptions = [
+    { value: "topRightCorner", label: "گوشه بالا-راست" },
+    { value: "topLeftCorner", label: "گوشه بالا-چپ" },
+    { value: "bottomRightCorner", label: "گوشه پایین-راست" },
+    { value: "bottomLeftCorner", label: "گوشه پایین-چپ" }
+  ];
   const badgeTypeOptions = [
     { value: "special_sell", label: "فروش ویژه" },
     { value: "best_price", label: "بهترین قیمت" },
@@ -69,114 +70,43 @@ const badgeSlotOptions = [
     fetchExchangeRate();
   }, []);
   return (
-    <div className="flex flex-col gap-y-4 w-full border rounded p-4">
+    <div className="flex flex-col gap-y-4 w-full  rounded sm:p-6 p-4">
       <div className="grid items-start md:grid-cols-12 gap-x-2 gap-y-4">
         {/* Campaign Section */}
-        <div className="col-span-12">
-          <label className="w-full flex flex-col gap-y-1">
-            <span className="text-sm">کمپین فروش*</span>
-            <div className="flex flex-row gap-x-4">
-              <Controller
-                control={control}
-                name={`variations.${index}.campaignTitle`}
-                rules={{
-                  required: "وارد کردن عنوان کمپین الزامی است",
-                  minLength: {
-                    value: 3,
-                    message: "عنوان کمپین باید حداقل ۳ حرف داشته باشد"
-                  },
-                  maxLength: {
-                    value: 30,
-                    message: "عنوان کمپین نباید بیشتر از ۳۰ حرف باشد"
-                  }
-                }}
-                render={({ field }) => (
-                  <input
-                    type="text"
-                    {...field}
-                    className="w-full rounded border px-2 py-1"
-                    placeholder="عنوان کمپین فروش را وارد کنید"
-                  />
-                )}
-              />
-              <Controller
-                control={control}
-                name={`variations.${index}.campaignState`}
-                rules={{
-                  required: "وارد کردن وضعیت کمپین الزامی است",
-                  minLength: {
-                    value: 3,
-                    message: "وضعیت کمپین باید حداقل ۳ حرف داشته باشد"
-                  },
-                  maxLength: {
-                    value: 30,
-                    message: "وضعیت کمپین نباید بیشتر از ۳۰ حرف باشد"
-                  }
-                }}
-                render={({ field }) => (
-                  <Dropdown
-                    items={[
-                      { value: "جدید", label: "جدید" },
-                      { value: "تخفیف‌دار", label: "تخفیف‌دار" },
-                      { value: "تمام‌شده", label: "تمام‌شده" },
-                      { value: "در-حال-فروش", label: "در حال فروش" }
-                    ]}
-                    placeholder="یک مورد انتخاب کنید"
-                    className={"w-full h-12"}
-                    returnType="id"
-                  />
-                )}
-              />
-            </div>
-            {errors.variations?.[index]?.campaignTitle && (
+        {/* Price */}
+        <div className="col-span-12 flex justify-center items-center">
+
+          <div className="w-full  md:w-1/2 ">
+            <span className="mr-6">عنوان این محصول</span>
+            <Controller
+              control={control}
+              name={`variations.${index}.title`}
+              rules={{
+                required: "عنوان",
+              }}
+              render={({ field: { onChange, value } }) => (
+                <input
+                  type="text"
+                  value={value || ""}
+                  onChange={(e) => {
+                    const rawValue = e.target.value;
+                    onChange(rawValue);
+                  }}
+                  className="flex-1  my-2 rounded border px-2 py-1 h-10 w-full "
+                  placeholder="عنوان را وارد کنید"
+                />
+              )}
+            />
+            {errors.variations?.[index]?.stock && (
               <span className="text-red-500 text-sm">
-                {errors.variations[index].campaignTitle.message}
+                {errors.variations[index].stock.message}
               </span>
             )}
-            {errors.variations?.[index]?.campaignState && (
-              <span className="text-red-500 text-sm">
-                {errors.variations[index].campaignState.message}
-              </span>
-            )}
-            {campaignState === "تخفیف‌دار" && (
-              <Controller
-                control={control}
-                name={`variations.${index}.discountAmount`}
-                rules={{
-                  required: "وارد کردن درصد تخفیف الزامی است",
-                  min: { value: 1, message: "درصد تخفیف باید حداقل ۱ باشد" },
-                  max: {
-                    value: 99,
-                    message: "درصد تخفیف نباید بیشتر از ۹۹ باشد"
-                  }
-                }}
-                render={({ field: { onChange, value } }) => (
-                  <input
-                    type="number"
-                    value={value || ""}
-                    onChange={(e) => {
-                      const rawValue = e.target.value;
-                      if (!isNaN(rawValue) && rawValue !== "") {
-                        onChange(Number(rawValue));
-                      }
-                    }}
-                    className="w-full border p-2 rounded mt-2"
-                    placeholder="درصد تخفیف را وارد کنید"
-                  />
-                )}
-              />
-            )}
-            {errors.variations?.[index]?.discountAmount && (
-              <span className="text-red-500 text-sm">
-                {errors.variations[index].discountAmount.message}
-              </span>
-            )}
-          </label>
+          </div>
         </div>
 
-        {/* Price */}
         <div className="col-span-12 md:col-span-6 ">
-          <span>قیمت واحد انتخابی (تومان)</span>
+          <span className="mr-6" >قیمت واحد انتخابی (تومان)</span>
           <Controller
             control={control}
             name={`variations.${index}.price`}
@@ -191,11 +121,11 @@ const badgeSlotOptions = [
                 value={value || ""}
                 onChange={(e) => {
                   const rawValue = e.target.value;
-                  if (!isNaN(rawValue) && rawValue !== "") {
+                  if (!isNaN(rawValue)) {
                     onChange(Number(rawValue));
                   }
                 }}
-                className="flex-1 rounded border px-2 py-1 h-10 w-full "
+                className="flex-1 my-2 rounded border px-2 py-1 h-10 w-full "
                 placeholder="قیمت را به تومان وارد کنید..."
               />
             )}
@@ -206,7 +136,7 @@ const badgeSlotOptions = [
             render={({ field: { value } }) => (
               <span className="text-green-600 text-sm">
                 {"معادل: "}
-                <span className="text-red-600">
+                <span className="text-green-600">
                   {(value / exchangeRate).toFixed(2)} دلار
                   {" ("}
                   {NumberToPersianWord.convert(value || 0)} تومان
@@ -216,15 +146,47 @@ const badgeSlotOptions = [
             )}
           />
           {errors.variations?.[index]?.price && (
-            <span className="text-red-500 text-sm">
+            <span className="text-red-500 mr-2 text-sm">
               {errors.variations[index].price.message}
             </span>
           )}
         </div>
+        <div className="col-span-12 md:col-span-6 ">
+          <span className="mr-6" >تخفیف</span>
+          <Controller
+            control={control}
+            name={`variations.${index}.offer`}
+            rules={{
+              min: { value: 0 },
+              max: { value: 100 }
+            }}
+            render={({ field: { onChange, value } }) => (
+              <input
+                type="number"
+                inputMode="numeric"
+                value={value || ""}
+                onChange={(e) => {
+                  const rawValue = e.target.value;
+                  if (!isNaN(rawValue)) {
+                    onChange(Number(rawValue));
+                  }
+                }}
+                min={0}
+                max={100}
+                className="flex-1 my-2 rounded border px-2 py-1 h-10 w-full "
+                placeholder="تخفیف را وارد کنید"
+              />
+            )}
+          />
+
+
+        </div>
 
         {/* Stock */}
+
+
         <div className="col-span-12 md:col-span-6 ">
-          <span>تعداد موجودی</span>
+          <span className="mr-6">تعداد موجودی</span>
           <Controller
             control={control}
             name={`variations.${index}.stock`}
@@ -243,7 +205,7 @@ const badgeSlotOptions = [
                     onChange(Number(rawValue));
                   }
                 }}
-                className="flex-1 rounded border px-2 py-1 h-10 w-full "
+                className="flex-1  mt-3 rounded border px-2 py-1 h-10 w-full "
                 placeholder="تعداد موجودی را وارد کنید..."
               />
             )}
@@ -276,7 +238,7 @@ const badgeSlotOptions = [
                     onChange(Number(rawValue));
                   }
                 }}
-                className="flex-1 rounded border px-2 py-1 h-10 w-full "
+                className="flex-1 mt-3 rounded border px-2 py-1 h-10 w-full "
                 placeholder="حد آستانه موجودی را وارد کنید..."
               />
             )}
@@ -290,7 +252,7 @@ const badgeSlotOptions = [
 
         {/* Status */}
         <div className="col-span-12 md:col-span-6 ">
-          <span>وضعیت</span>
+          <span className="mr-10">وضعیت</span>
           <Controller
             control={control}
             name={`variations.${index}.status`}
@@ -298,9 +260,10 @@ const badgeSlotOptions = [
             render={({ field }) => (
               <Dropdown
                 items={statusOptions}
+                value={field.value}
                 onChange={field.onChange}
                 placeholder="وضعیت را انتخاب کنید..."
-                className="w-full"
+                className="w-full mt-3"
               />
             )}
           />
@@ -312,7 +275,7 @@ const badgeSlotOptions = [
         </div>
 
         {/* Properties */}
-        <div className="col-span-12">
+        {/* <div className="col-span-12">
           <span>ویژگی‌ها</span>
           <div className="grid grid-cols-2 gap-2">
             {[
@@ -350,34 +313,13 @@ const badgeSlotOptions = [
                 {errors.variations[index].properties[prop].message}
               </span>
             ))}
-        </div>
+        </div> */}
 
-        {/* Warranty */}
-        <div className="col-span-12 md:col-span-6 ">
-          <span>گارانتی</span>
-          <Controller
-            control={control}
-            name={`variations.${index}.warranty`}
-            rules={{ required: "انتخاب گارانتی الزامی است" }}
-            render={({ field }) => (
-              <Dropdown
-                items={warrantyOptions}
-                onChange={field.onChange}
-                placeholder="گارانتی را انتخاب کنید..."
-                className="w-full"
-              />
-            )}
-          />
-          {errors.variations?.[index]?.warranty && (
-            <span className="text-red-500 text-sm">
-              {errors.variations[index].warranty.message}
-            </span>
-          )}
-        </div>
+
 
         {/* Color */}
         <div className="col-span-12 md:col-span-6 ">
-          <span>رنگ</span>
+          <span className="mr-10">رنگ</span>
           <Controller
             control={control}
             name={`variations.${index}.color`}
@@ -385,9 +327,10 @@ const badgeSlotOptions = [
             render={({ field }) => (
               <Dropdown
                 items={colorOptions}
+                value={field.value}
                 onChange={field.onChange}
                 placeholder="رنگ را انتخاب کنید..."
-                className="w-full"
+                className="w-full mt-3"
               />
             )}
           />
@@ -398,9 +341,33 @@ const badgeSlotOptions = [
           )}
         </div>
 
+        {/* Warranty */}
+        <div className="col-span-12 md:col-span-6 ">
+          <span className="mr-10">گارانتی</span>
+          <Controller
+            control={control}
+            name={`variations.${index}.warranty`}
+            rules={{ required: "انتخاب گارانتی الزامی است" }}
+            render={({ field }) => (
+              <Dropdown
+                items={warrantyOptions}
+                onChange={field.onChange}
+                value={field.value}
+                placeholder="گارانتی را انتخاب کنید..."
+                className="w-full mt-3"
+              />
+            )}
+          />
+          {errors.variations?.[index]?.warranty && (
+            <span className="text-red-500 text-sm">
+              {errors.variations[index].warranty.message}
+            </span>
+          )}
+        </div>
+
         {/* Insurance */}
         <div className="col-span-12 md:col-span-6 ">
-          <span>بیمه</span>
+          <span className="mr-10">بیمه</span>
           <Controller
             control={control}
             name={`variations.${index}.insurance`}
@@ -408,9 +375,10 @@ const badgeSlotOptions = [
             render={({ field }) => (
               <Dropdown
                 items={insuranceOptions}
+                value={field.value}
                 onChange={field.onChange}
                 placeholder="بیمه را انتخاب کنید..."
-                className="w-full"
+                className="w-full mt-3"
               />
             )}
           />
@@ -420,10 +388,21 @@ const badgeSlotOptions = [
             </span>
           )}
         </div>
-
         <div className="col-span-12 md:col-span-6 "></div>
+        <div className="flex justify-center col-span-12 w-full items-center">
+          <div className="w-full bg-gray-900 p-11 rounded-2xl min-h-[60vh] md:w-1/2">
+            <Controller
+              control={control}
+              name={`variations.${index}.features`}
+              rules={{ required: "انتخاب بیمه الزامی است" }}
+              render={({ field: { onChange, value } }) => (
+                <FeatureInput onChange={onChange} value={value} />
+              )}
+            />
+          </div>
+        </div>
         {/* Boolean Fields */}
-        <div className="col-span-12 md:col-span-4">
+        {/* <div className="col-span-12 md:col-span-4">
           <label className="flex items-center gap-x-2">
             <Controller
               control={control}
@@ -487,10 +466,10 @@ const badgeSlotOptions = [
               {errors.variations[index].has_best_price_in_last_month.message}
             </span>
           )}
-        </div>
+        </div> */}
 
         {/* Variant Badges */}
-        <div className="col-span-12">
+        {/* <div className="col-span-12">
           <span>افزودن برچسب</span>
           {badges.map((badge, badgeIndex) => (
             <div
@@ -643,7 +622,7 @@ const badgeSlotOptions = [
               افزودن برچسب
             </button>
           </div>
-        </div>
+        </div> */}
 
         {/* Remove Variant Button */}
 

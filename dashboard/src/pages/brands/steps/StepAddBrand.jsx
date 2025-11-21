@@ -35,11 +35,9 @@ const StepAddBrand = () => {
 
   const onSubmit = async (data) => {
     console.log("Form Data:", data);
-    const selectedTags = data.tags.map((tag) => tag.id);
-
     const formData = new FormData();
     formData.append("logo", thumbnail);
-    formData.append("tags", JSON.stringify(selectedTags));
+    formData.append("tags", JSON.stringify(data.tags));
     formData.append("title", data.title);
     formData.append("description", data.description);
     formData.append("is_international", data.isInternational);

@@ -23,7 +23,9 @@ import insurance from "@/components/icons/Insurance";
 import Company from "@/components/icons/Company";
 import Warranty from "@/components/icons/Warranty";
 import Color from "@/components/icons/Color";
+// import { VscSymbolProperty } from "react-icons/vsc";
 import Icon from "@/components/icons/Icon";
+import Feature from "@/components/icons/Feature";
 function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
   const location = useLocation();
 
@@ -81,10 +83,19 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
       ]
     },
     { title: "کاربران", icon: User, path: "/users" },
+    // Feature
     { title: "نماد", icon: Icon, path: "/icons" },
     { title: " دسته بندی", icon: Category, path: "/categories" },
     { title: "تگها", icon: Tag, path: "/tags" },
     { title: "واحدها", icon: Unit, path: "/units" },
+    {
+      title: "ویژگی ها",
+      icon: Feature,
+      subItems: [
+        { title: "ویژگی ها", path: "/features" },
+        { title: "نوع ویژگی ها", path: "/type-features" }
+      ]
+    },
     { title: "برندها", icon: Brand, path: "/brands" },
     { title: "رنگ ها", icon: Color, path: "/colors" },
     {
@@ -118,9 +129,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
     <div className="min-w-fit">
       {/* Sidebar backdrop (mobile only) */}
       <div
-        className={`fixed inset-0 bg-gray-900 bg-opacity-30 z-40 lg:hidden lg:z-auto transition-opacity duration-200 ${
-          sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
+        className={`fixed inset-0 bg-gray-900 bg-opacity-30 z-40 lg:hidden lg:z-auto transition-opacity duration-200 ${sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
         aria-hidden="true"
       ></div>
 
@@ -128,9 +138,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen, variant = "default" }) {
       <div
         id="sidebar"
         ref={sidebar}
-        className={`flex lg:!flex flex-col absolute z-40 right-0 top-0 lg:static lg:right-auto lg:top-auto lg:translate-x-0 h-[100dvh] overflow-y-scroll lg:overflow-y-auto no-scrollbar w-64 lg:w-20 lg:sidebar-expanded:!w-64 2xl:!w-64 shrink-0 bg-white dark:bg-gray-800 p-3 transition-all duration-200 ease-in-out ${
-          sidebarOpen ? "translate-x-0" : "translate-x-64"
-        }`}
+        className={`flex lg:!flex flex-col absolute z-40 right-0 top-0 lg:static lg:right-auto lg:top-auto lg:translate-x-0 h-[100dvh] overflow-y-scroll lg:overflow-y-auto no-scrollbar w-64 lg:w-20 lg:sidebar-expanded:!w-64 2xl:!w-64 shrink-0 bg-white dark:bg-gray-800 p-3 transition-all duration-200 ease-in-out ${sidebarOpen ? "translate-x-0" : "translate-x-64"
+          }`}
       >
         {/* Sidebar header */}
         <div className="flex justify-between mb-10 pr-3 sm:px-2">

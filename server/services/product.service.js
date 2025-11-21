@@ -8,45 +8,40 @@ const Variation = require("../models/variation.model");
 
 /* add new product */
 exports.addProduct = async (req, res) => {
-  const { features, campaign, variations, tags, ...otherInformation } =
+  const { features, variations, tags, ...otherInformation } =
     req.body;
   let thumbnail = null;
   let gallery = [];
   const parsedFeatures = JSON.parse(features);
-  const parsedCampaign = JSON.parse(campaign);
   const parsedVariations = JSON.parse(variations);
   const parsedTags = JSON.parse(tags);
 
-  if (req.uploadedFiles["thumbnail"].length) {
+  if (req.uploadedFiles["thumbnail"]?.length) {
     thumbnail = {
       url: req.uploadedFiles["thumbnail"][0].url,
-      public_id: req.uploadedFiles["thumbnail"][0].key
+      public_id: req.uploadedFiles["thumbnail"][0].public_id
     };
   }
 
-  if (req.uploadedFiles["gallery"] && req.uploadedFiles["gallery"].length > 0) {
+  if (req.uploadedFiles["gallery"] && req.uploadedFiles["gallery"]?.length > 0) {
     gallery = req.uploadedFiles["gallery"].map((file) => ({
       url: file.url,
-      public_id: file.key
+      public_id: file.public_id
     }));
   }
 
   const product = await Product.create({
     ...otherInformation,
     features: parsedFeatures,
-    campaign: parsedCampaign,
+    variations: parsedVariations,
+    isSpecial: req.isSpecial == "true" ? true : false,
     tags: parsedTags,
-    creator: req.user._id,
+    creator: req.admin._id,
+    rating: { count: 0, rate: 0 },
     thumbnail,
     gallery
   });
 
-  const variationDocs = await Promise.all(
-    parsedVariations.map(async (variation) => {
-      return await Variation.create({ ...variation, product: product._id });
-    })
-  );
-  product.variations = variationDocs.map((v) => v._id);
   await product.save();
 
   await Category.findByIdAndUpdate(product.category, {
@@ -64,22 +59,9 @@ exports.addProduct = async (req, res) => {
 exports.getProducts = async (res) => {
   const products = await Product.find({ isDeleted: false })
     .select(
-      "title thumbnail campaign slug gallery status summary productId _id createdAt creator"
+      "title thumbnail slug gallery status summary productId _id createdAt creator"
     )
-    .populate("category", "title")
-    .populate({
-      path: "reviews",
-      options: { sort: { updatedAt: -1 } },
-      select: "reviewer"
-    })
-    .populate({
-      path: "variations",
-      select: "price stock unit lowStockThreshold",
-      populate: {
-        path: "unit",
-        select: "title value"
-      }
-    });
+    .populate("category");
   res.status(200).json({
     acknowledgement: true,
     message: "Ok",
@@ -128,37 +110,7 @@ exports.getDetailsProducts = async (res) => {
 /* get a single product */
 exports.getProduct = async (req, res) => {
   try {
-    const productId = parseInt(req.params.id, 10);
-
-    const product = await Product.findOne({ productId })
-      .populate("category")
-      .populate({
-        path: "reviews",
-        options: { sort: { updatedAt: -1 } },
-        populate: [
-          "reviewer",
-          {
-            path: "product",
-            populate: ["category"]
-          }
-        ]
-      })
-      .populate({
-        path: "creator",
-        select: "name avatar role" // دریافت نام و آواتار سازنده
-      })
-      .populate({
-        path: "variations",
-        select: "price stock unit lowStockThreshold",
-        populate: {
-          path: "unit",
-          select: "title value description" // فیلدهای مورد نظر از واحد
-        }
-      })
-      .populate({
-        path: "tags",
-        select: "title keynotes"
-      });
+    const product = await Product.findById(req.params.id)
     res.status(200).json({
       acknowledgement: true,
       message: "Ok",
@@ -255,42 +207,39 @@ exports.getFilteredProducts = async (req, res) => {
 /* update product */
 exports.updateProduct = async (req, res) => {
   const product = await Product.findById(req.params.id);
-  const updatedProduct = req.body;
-
-  if (!req.body.thumbnail && req.files && req.files.thumbnail?.length > 0) {
-    remove(product.thumbnail.public_id);
-
+  const updatedProduct = req.body
+  console.log(req.body.variations);
+  updatedProduct.isSpecial = updatedProduct.isSpecial == "true" ? true : false;
+  if (req.uploadedFiles.thumbnail && req.uploadedFiles.thumbnail !== "undefined") {
+    await remove(product.thumbnail.public_id);
     updatedProduct.thumbnail = {
-      url: req.files.thumbnail[0].path,
-      public_id: req.files.thumbnail[0].filename
+      url: req.uploadedFiles["thumbnail"][0].url,
+      public_id: req.uploadedFiles["thumbnail"][0].public_id
     };
+  } else {
+    updatedProduct.thumbnail = product.thumbnail
   }
 
-  if (
-    !req.body.gallery?.length > 0 &&
-    req.files &&
-    req.files.gallery?.length > 0
-  ) {
+  if (req.uploadedFiles.gallery && req.uploadedFiles.gallery !== "undefined") {
     for (let i = 0; i < product.gallery.length; i++) {
       await remove(product.gallery[i].public_id);
     }
-
-    updatedProduct.gallery = req.files.gallery.map((file) => ({
-      url: file.path,
-      public_id: file.filename
+    updatedProduct.gallery = req.uploadedFiles.gallery.map((file) => ({
+      url: file.url,
+      public_id: file.public_id
     }));
   }
 
   updatedProduct.features = JSON.parse(req.body.features);
-  updatedProduct.campaign = JSON.parse(req.body.campaign);
+  updatedProduct.tags = JSON.parse(req.body.tags);
   updatedProduct.variations = JSON.parse(req.body.variations);
 
-  await Product.findByIdAndUpdate(req.params.id, { $set: updatedProduct });
+  await Product.findByIdAndUpdate(req.params.id, updatedProduct);
 
   res.status(200).json({
     acknowledgement: true,
     message: "Ok",
-    description: "Product updated successfully"
+    description: "تغییرات با موفقیت ثبت شد"
   });
 };
 
@@ -366,14 +315,7 @@ exports.updateStatusProduct = async (req, res) => {
 
 /* delete product */
 exports.deleteProduct = async (req, res) => {
-  const product = await Product.findByIdAndUpdate(
-    req.params.id,
-    {
-      isDeleted: true,
-      deletedAt: Date.now()
-    },
-    { new: true }
-  );
+  const product = await Product.findById(req.params.id);
 
   if (!product) {
     return res.status(404).json({
@@ -382,6 +324,15 @@ exports.deleteProduct = async (req, res) => {
       description: "محصولی که می‌خواهید حذف کنید، وجود ندارد"
     });
   }
+
+  await remove(product.thumbnail.public_id);
+
+
+  for (let i = 0; i < product.gallery.length; i++) {
+    await remove(product.gallery[i].public_id);
+  }
+
+  await Product.findByIdAndDelete(req.params.id)
 
   res.status(200).json({
     acknowledgement: true,

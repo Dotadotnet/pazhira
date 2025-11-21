@@ -9,13 +9,13 @@ const ThumbnailUpload = ({
   iconSize = 5,
   border = true,
   title="انتخاب یک فایل (عکس یا ویدئو)",
-  name="thumbnail"
+  name="thumbnail",
+  watch
 }) => {
+  
   const handleThumbnailPreview = (e) => {
     setThumbnail(e.target.files[0]);
-
     const file = e.target.files[0];
-
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {

@@ -14,7 +14,11 @@ const Auth = ({ children }) => {
   const admin = useMemo(() => adminData?.data || {}, [adminData]);
   useEffect(() => {
     if (adminData && !adminError) {
-      toast.success(adminData?.description, { id: "auth" });
+      const firstTimeLogin = localStorage.getItem("FirstLogin") !== "false" || !localStorage.getItem("FirstLogin") ? false : true;
+      if (!firstTimeLogin) {
+        toast.success(adminData?.description, { id: "auth" });
+        localStorage.setItem("FirstLogin", false)
+      }
       dispatch(addAdmin(admin));
     }
 

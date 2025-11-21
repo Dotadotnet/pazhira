@@ -10,22 +10,31 @@ exports.addCategory = async (req, res) => {
 
     const thumbnail = req.uploadedFiles?.["thumbnail"]
       ? {
-          url: req.uploadedFiles["thumbnail"][0].url,
-          public_id: req.uploadedFiles["thumbnail"][0].key
-        }
+        url: req.uploadedFiles["thumbnail"][0].url,
+        public_id: req.uploadedFiles["thumbnail"][0].key
+      }
       : null;
 
 
+    if (body.parentCategory !== "undefined" && body.parentCategory) {
+      let parentCategory = await Category.findById(body.parentCategory);
+      await Category.findByIdAndUpdate(body.parentCategory, {
+        $push: { subCategories: body.parentCategory },
+        features: [... new Set([...parentCategory.features, ...JSON.parse(body.features || "[]")])],
+      })
+    }
 
     const category = new Category({
       title: body.title,
       description: body.description,
       thumbnail: thumbnail,
-      keynotes: JSON.parse(body.keynotes || "[]"),
+      features: JSON.parse(body.features || "[]"),
+      typeCategory: body.typeCategory,
       tags: JSON.parse(body.tags || "[]"),
       creator: req.admin._id,
       icon: body.icon,
-      parentCategory: body.category || null
+      parentCategory: body.parentCategory == "undefined" ? null : body.parentCategory,
+      subCategories: []
     });
 
     const result = await category.save();
@@ -76,14 +85,17 @@ exports.getCategories = async (req, res) => {
         select: "_id"
       })
       .populate({
+        path: "icon",
+        select: "symbol"
+      })
+      .populate({
         path: "creator",
         select: "name avatar"
       })
       .populate({
-        path: "children",
+        path: "parentCategory",
         select: "title"
       })
-      
       .populate({
         path: "tags",
         select: "title"
@@ -139,26 +151,44 @@ exports.getCategory = async (req, res) => {
 
 /* update category */
 exports.updateCategory = async (req, res) => {
-  const category = await Category.findById(req.params.id);
+  const preCategory = await Category.findById(req.params.id);
   let updatedCategory = req.body;
-  if (!req.body.thumbnail && req.file) {
-    await remove(category.thumbnail.public_id);
-
+  if (req.uploadedFiles.thumbnail && req.uploadedFiles.thumbnail !== "undefined") {
+    await remove(preCategory.thumbnail.public_id);
     updatedCategory.thumbnail = {
-      url: req.file.path,
-      public_id: req.file.filename
+      url: req.uploadedFiles["thumbnail"][0].url,
+      public_id: req.uploadedFiles["thumbnail"][0].key
     };
+  } else {
+    updatedCategory.thumbnail = preCategory.thumbnail
   }
 
-  updatedCategory.keynotes = JSON.parse(req.body.keynotes);
-  updatedCategory.tags = JSON.parse(req.body.tags);
+  if (updatedCategory.parentCategory == "null") {
+    updatedCategory.parentCategory = null
+  }
+
+  let preParentCategoryId = preCategory.parentCategory.toString();
+  
+  if (updatedCategory.parentCategory !== preParentCategoryId) {
+    await Category.findByIdAndUpdate(preParentCategoryId, { $pull: { subCategories: preParentCategoryId } })
+    await Category.findByIdAndUpdate(updatedCategory.parentCategory, { $push: { subCategories: updatedCategory.parentCategory } })
+  }
+
+  if (updatedCategory.tags) {
+    updatedCategory.tags = JSON.parse(updatedCategory.tags)
+  }
+
+  if (updatedCategory.features) {
+    updatedCategory.features = JSON.parse(updatedCategory.features)
+  }
+
 
   await Category.findByIdAndUpdate(req.params.id, updatedCategory);
 
   res.status(200).json({
     acknowledgement: true,
     message: "Ok",
-    description: "Category updated successfully"
+    description: "تغییرات با موفقیت اعمال شد"
   });
 };
 

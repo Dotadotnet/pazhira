@@ -45,7 +45,7 @@ function Products() {
     dispatch(setProducts(products));
   }, [productsError, productsData, productsLoading, dispatch, products]);
 
-  const [deleteProduct, { isLoading, data, error }] =
+  const [deleteProduct, { isLoading, data, error , isRemoving }] =
     useDeleteProductMutation();
 
   useEffect(() => {
@@ -132,8 +132,8 @@ function Products() {
                         {product?.description
                           ? product?.description
                           : new Date(product.createdAt).toLocaleDateString(
-                              "fa-IR"
-                            )}
+                            "fa-IR"
+                          )}
                       </span>
                     </article>
                   </div>
@@ -156,13 +156,12 @@ function Products() {
                       .map((variation) => (
                         <div key={variation?._id} className="relative">
                           <button
-                            className={`relative rounded-full flex items-center justify-center text-xl   ${
-                              variation.stock > variation.lowStockThreshold
-                                ? "bg-teal-400" 
+                            className={`relative rounded-full flex items-center justify-center text-xl   ${variation.stock > variation.lowStockThreshold
+                                ? "bg-teal-400"
                                 : variation.stock === 0
-                                ? "bg-red-400"
-                                : "bg-yellow-400"
-                            }`}
+                                  ? "bg-red-400"
+                                  : "bg-yellow-400"
+                              }`}
                             style={{
                               width: `${25 + variation.unit.value * 10}px`,
                               height: `${25 + variation.unit.value * 10}px`
@@ -172,13 +171,12 @@ function Products() {
                               {variation?.stock} {/* نمایش تعداد موجودی */}
                             </span>
                             <span
-                              className={`absolute h-2/3 w-2/3 rounded-full transition-all duration-300 ease-in-out animate-ping ${
-                                variation.stock > variation.lowStockThreshold
-                                ? "bg-teal-400" 
-                                : variation.stock === 0
-                                ? "bg-red-400"
-                                : "bg-yellow-400"
-                            }`}
+                              className={`absolute h-2/3 w-2/3 rounded-full transition-all duration-300 ease-in-out animate-ping ${variation.stock > variation.lowStockThreshold
+                                  ? "bg-teal-400"
+                                  : variation.stock === 0
+                                    ? "bg-red-400"
+                                    : "bg-yellow-400"
+                                }`}
                             ></span>
                           </button>
                         </div>
@@ -197,20 +195,17 @@ function Products() {
                         if (isDeleteModalOpen) {
                           e.preventDefault();
                         } else {
-                          navigate(`/products/update/${product?._id}`);
+                          navigate(`/products/${product?._id}`);
                         }
                       }}
                     >
                       <Edit className="w-5 h-5" />
                     </span>
-                    <span
-                      className="delete-button"
-                      onClick={(e) => {
-                        openDeleteModal(product);
-                      }}
-                    >
-                      <Trash className="w-5 h-5" />
-                    </span>
+                    <DeleteModal
+                      message="آیا از حذف این دسته بندی اطمینان دارید؟"
+                      isLoading={isRemoving}
+                      onDelete={() => deleteProduct(product._id)}
+                    />
                   </article>
                 </div>
               </div>
@@ -218,14 +213,7 @@ function Products() {
           </div>
         </section>
       )}
-      {isDeleteModalOpen && (
-        <DeleteModal
-          isOpen={isDeleteModalOpen}
-          onDelete={() => deleteProduct(selectedProduct?._id)}
-          onClose={closeDeleteModal}
-          message={`آیا مطمئن هستید که می‌خواهید دسته‌بندی "${selectedProduct?.title}" را حذف کنید؟`}
-        />
-      )}
+      
     </ControlPanel>
   );
 }

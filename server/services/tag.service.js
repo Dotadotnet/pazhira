@@ -15,7 +15,7 @@ exports.addTag = async (req, res) => {
   const tag = new Tag({
     title: body.title,
     description: body.description,
-    tags: JSON.parse(body.tags),
+    tags: JSON.parse(body.keynotes),
     creator: req.admin._id,
     robots: robotsArray,
  

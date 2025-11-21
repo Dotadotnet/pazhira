@@ -3,22 +3,25 @@ import { toast } from "react-hot-toast";
 import NavigationButton from "@/components/shared/button/NavigationButton";
 import { useForm } from "react-hook-form";
 import SendButton from "@/components/shared/button/SendButton";
-import { useAddCategoryMutation } from "@/services/category/categoryApi";
+import { useAddCategoryMutation, useUpdateCategoryMutation } from "@/services/category/categoryApi";
 import ThumbnailStep from "./ThumbnailStep";
 import StepIndicator from "./StepIndicator";
 import TitleStep from "./TitleStep";
 import TagsStep from "./TagsStep";
 import { useNavigate } from "react-router-dom";
-import Features from "./Features";
+import CategoryDetails from "./CategoryDetails";
 
-const StepAddCategory = () => {
+
+const StepAddCategory = ({ prevData = null }) => {
   const [thumbnail, setThumbnail] = useState(null);
   const [addCategory, { isLoading, data, error }] = useAddCategoryMutation();
+  
+  const [updateCategory, { isLoading: isUpdateing, data: updateData, error: updateError }] = useUpdateCategoryMutation();
   const [currentStep, setCurrentStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState({});
   const [invalidSteps, setInvalidSteps] = useState({});
   const [tags, setTags] = useState([""]);
-  const [features, setFeatures] = useState([{icon:'', title: "", content: [""] }]);
+  const [features, setFeatures] = useState([{ icon: '', title: "", content: [""] }]);
 
   const {
     register,
@@ -30,31 +33,31 @@ const StepAddCategory = () => {
     handleSubmit,
     watch
   } = useForm({
-    mode: "onChange"
+    mode: "onChange",
+    defaultValues: prevData
   });
   const totalSteps = 4;
 
 
   const onSubmit = async (data) => {
-    console.log("Form Data:", data);
-        const selectedTags = data.tags.map((tag) => tag.id);
-
     const formData = new FormData();
-
-    formData.append("thumbnail", thumbnail);
-    formData.append("icon", data.svgIcon);
-
-    formData.append("tags", JSON.stringify(selectedTags));
+    formData.append("thumbnail", data.thumbnail[0]);
+    formData.append("parentCategory", data.parentCategory);
+    formData.append("typeCategory", data.typeCategory);
+    formData.append("icon", data.icon);
+    formData.append("tags", JSON.stringify(data.tags));
+    formData.append("features", JSON.stringify(data.features));
     formData.append("title", data.title);
-if (data.category) {
-  formData.append("category", data.category);
-}
+    if (data.category) {
+      formData.append("category", data.category);
+    }
     formData.append("description", data.description);
+    if (prevData) {
+      updateCategory({ id: prevData._id, body: formData })
+    } else {
+      addCategory(formData);
+    }
 
-     addCategory(formData);
-    for (let pair of formData.entries()) {
-    console.log(`${pair[0]}:`, pair[1]);
-  }
   };
   const navigate = useNavigate();
 
@@ -63,50 +66,28 @@ if (data.category) {
       toast.loading("در حال افزودن دسته بندی...", { id: "addCategory" });
     }
 
+     if (isUpdateing) {
+      toast.loading("در حال اعمال تغییرات ...", { id: "addCategory" });
+    }
+
     if (data?.acknowledgement) {
       toast.success(data?.description, { id: "addCategory" });
       navigate("/categories");
     }
-    if (data?.acknowledgement) {
-      toast.error(data?.description, { id: "addCategory" });
+
+    if (updateData?.acknowledgement) {
+      toast.success(updateData?.description, { id: "addCategory" });
+      window.location.reload();
     }
+
     if (error?.data) {
       toast.error(error?.data?.description, { id: "addCategory" });
     }
-  }, [isLoading, data, error]);
+  }, [isLoading , isUpdateing , data, updateData, error]);
 
   const nextStep = async () => {
-    let valid = false;
-    switch (currentStep) {
-      case 1:
-        valid = await trigger("thumbnail");
-        if (!valid) {
-          toast.error("لطفاً تصویر بند انگشتی را وارد کنید");
-          setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
-          return;
-        }
-        valid = true;
-        break;
-      case 2:
-        valid = await trigger("title");
-        if (!valid) {
-          toast.error("لطفاً عنوان دسته بندی را وارد کنید");
-          setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
-          return;
-        }
-        valid = await trigger("description");
-        if (!valid) {
-          toast.error("لطفاً توضیحات دسته بندی را وارد کنید");
-          setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
-          return;
-        }
-        break;
+    let valid = true;
 
-
-
-      default:
-        break;
-    }
 
     if (valid) {
       setCompletedSteps((prev) => ({ ...prev, [currentStep]: true }));
@@ -127,7 +108,7 @@ if (data.category) {
             nextStep={nextStep}
             register={register}
             watch={watch}
-            control ={control}
+            control={control}
             errors={errors.thumbnail}
           />
         );
@@ -140,12 +121,13 @@ if (data.category) {
             nextStep={nextStep}
           />
         );
- case 3:
+      case 3:
         return (
-          <Features
-          features={features}
+          <CategoryDetails
+            features={features}
             setFeatures={setFeatures}
             register={register}
+            control={control}
             errors={errors}
             prevStep={prevStep}
             nextStep={nextStep}
@@ -204,7 +186,7 @@ if (data.category) {
       {renderStepContent(currentStep)}
 
       {currentStep === totalSteps && (
-        <div className="flex justify-between mt-12">
+        <div className="flex flex-row-reverse justify-between mt-12">
           <SendButton />
           <NavigationButton direction="prev" onClick={prevStep} />
         </div>

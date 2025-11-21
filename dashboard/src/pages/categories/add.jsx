@@ -13,7 +13,6 @@ function AddCategory() {
 
    <StepAddCategory />
     </div>
-
    <ThemeToggle />
     </div>
     </section>

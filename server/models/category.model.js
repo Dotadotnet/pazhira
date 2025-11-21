@@ -15,7 +15,6 @@ const categorySchema = new mongoose.Schema(
       type: String,
       required: [true, "لطفاً نام دسته‌بندی را وارد کنید"],
       trim: true,
-      unique: [true, "دسته‌بندی مشابه از قبل وجود دارد"],
       maxLength: [100, "عنوان شما باید حداکثر ۱۰۰ کاراکتر باشد"]
     },
 
@@ -42,40 +41,29 @@ const categorySchema = new mongoose.Schema(
         required: [true, "تگ دسته بندی الزامی است"]
       }
     ],
-
-    featureGroups: [
-      {
-        name: { type: String, required: true }, // مثلا "پردازنده" یا "صفحه نمایش"
-        icon: { type: String }, 
-        fields: [
-          {
-            name: { type: String, required: true },
-            type: {
-              type: String,
-              default: "string"
-            },
-            options: [String], // برای select
-            required: { type: Boolean, default: false },
-            icon: { type: String }
-          }
-        ]
-      }
-    ],
     parentCategory: {
       type: ObjectId,
       ref: "Category",
       default: null
     },
-    children: [
+    subCategories: [
       {
         type: ObjectId,
         ref: "Category"
       }
     ],
-    icon: {
-      type: String,
-      required: false
-    },
+    icon:
+    {
+      type: ObjectId,
+      ref: "Icon"
+    }
+    ,
+    features: [
+      {
+        type: ObjectId,
+        ref: "Feature"
+      }
+    ],
     products: [
       {
         type: ObjectId,

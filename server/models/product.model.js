@@ -17,78 +17,97 @@ const productSchema = new mongoose.Schema(
     title_en: {
       type: String
     },
+    description: {
+      type: String,
+      required: true
+    },
     summary: {
       type: String,
       required: true
     },
+    campaignTitle: { type: String },
+    campaignState: { type: String },
     url: {
-      uri_en: {
-        type: String,
-        unique: true,
-        sparse: true
-      },
-      uri_fa: {
-        type: String,
-        unique: true,
-        sparse: true
-      }
+      type: String
     },
-    statusProduct: {
-      type: String,
-      enum: ["marketable", "unavailable", "out_of_stock"],
-      required: true
+    isSpecial: {
+      typre: Boolean
     },
-    has_quick_view: {
-      type: Boolean,
-      default: false
-    },
-    product_type: {
-      type: String,
-      default: "product"
-    },
-
     category: {
       type: ObjectId,
       ref: "Category",
       required: true
     },
+    features: [
+      {
+        feature: { type: ObjectId, ref: "Feature", },
+        value: { type: mongoose.Schema.Types.Mixed }
+      }
+    ],
     brand: {
       type: ObjectId,
       ref: "Brand",
       required: true
     },
-    images: {
-      main: {
-        url: [{ type: String }],
-        webp_url: [{ type: String }]
-      },
-      list: [
-        {
-          url: [{ type: String }],
-          webp_url: [{ type: String }]
-        }
-      ]
+    thumbnail:
+    {
+      url: { type: String },
+      public_id: { type: String }
     },
-    variants: [
+    gallery: [
       {
-        type: ObjectId,
-        ref: "Variant",
-        required: true
+        url: { type: String },
+        public_id: { type: String }
       }
     ],
-    default_variant: {
-      type: ObjectId,
-      ref: "Variant"
-    },
-    second_default_variant: {
-      type: ObjectId,
-      ref: "Variant"
-    },
-    specifications: [
+    variations: [
       {
-        type: ObjectId,
-        ref: "Specification",
-        required: true
+        price: {
+          type: Number,
+          required: true,
+          min: 0,
+        },
+        offer: {
+          type: Number,
+          default: 0,
+          min: 0,
+          max: 100
+        },
+        stock: {
+          type: Number,
+          min: 0
+        },
+        lowStockThreshold: {
+          type: Number,
+          min: 0
+        },
+        title: {
+          type: String
+        },
+        warranty: {
+          type: ObjectId,
+          ref: "Warranty",
+          required: false,
+          default: null
+        },
+        insurance: {
+          type: ObjectId,
+          ref: "Insurance",
+          required: false,
+          default: null
+        },
+        color: {
+          type: ObjectId,
+          ref: "Color",
+          required: false,
+          default: null
+        },
+        features: [
+          {
+            feature: { type: ObjectId, ref: "Feature", },
+            value: { type: mongoose.Schema.Types.Mixed }
+          }
+        ]
       }
     ],
     comments: [
@@ -98,80 +117,26 @@ const productSchema = new mongoose.Schema(
       }
     ],
 
-    questions: [
-      {
-        type: ObjectId,
-        ref: "Question"
-      }
-    ],
-
     rating: {
       rate: { type: Number, required: true },
       count: { type: Number, required: true }
     },
 
-    pros_and_cons: [{ type: String }],
-    suggestion: {
-      count: { type: Number, default: 0 },
-      percentage: { type: Number, default: 0 }
-    },
+    tags: [
+      {
+        type: ObjectId,
+        ref: "Tag",
+        required: [true, "تگ دسته بندی الزامی است"]
+      }
+    ],
+
     faqs: [
       {
         question: { type: String, required: true },
         answer: { type: String, required: true }
       }
     ],
-    product_badges: [
-      {
-        type: ObjectId,
-        ref: "Badge"
-      }
-    ],
-    technoPlus: {
-      type: ObjectId,
-      ref: "DigiPlus",
-      required: true
-    },
-    has_size_guide: { type: Boolean, default: false },
-    has_true_to_size: { type: Boolean, default: false },
-    show_type: { type: String, default: "normal" },
-    has_offline_shop_stock: { type: Boolean, default: false },
-    expert_reviews: {
-      description: { type: String, default: "" },
-      short_review: { type: String, default: "" },
-      technical_properties: [{ type: String }]
-    },
 
-    intrack: {
-      eventName: { type: String },
-      eventData: {
-        currency: { type: String },
-        deviceType: { type: String },
-        name: { type: String },
-        productId: { type: Number },
-        productImageUrl: [{ type: String }],
-        leafCategory: { type: String },
-        unitPrice: { type: Number },
-        url: { type: String },
-        supplyCategory: { type: String },
-        categoryLevel1: { type: String },
-        categoryLevel2: { type: String },
-        categoryLevel3: { type: String },
-        categoryLevel4: { type: String },
-        categoryLevel5: { type: String }
-      }
-    },
-    promotion_banner: [{ type: String }],
-    bigdata_tracker_data: {
-      page_name: { type: String },
-      page_info: {
-        product_id: { type: Number }
-      }
-    },
-    seo: {
-      type: ObjectId,
-      ref: "Seo"
-    },
     creator: {
       type: ObjectId,
       ref: "Admin"
@@ -195,15 +160,8 @@ productSchema.pre("save", async function (next) {
     if (!this.title_en && this.title) {
       this.title_en = await translateToEnglish(this.title);
     }
-    if (!this.url || !this.url.uri_en) {
-      this.url = {
-        ...this.url,
-        uri_en: `/brand/${this.brandId}/${this.slug_en}`
-      };
-    }
-
-    if (!this.url.uri_fa && this.slug_fa) {
-      this.url.uri_fa = `/brand/${this.brandId}/${this.slug_fa}`;
+    if (!this.url) {
+      this.url = process.env.NEXT_PUBLIC_CLIENT_URL + "/" + this.productId + "/" + this.title_en.replaceAll(" ", "-");
     }
 
     next();

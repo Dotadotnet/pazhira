@@ -5,10 +5,12 @@ import { useGetTagsQuery } from "@/services/tag/tagApi";
 import Tag from "@/components/icons/Tag";
 import MultiSelect from "@/components/shared/dropDown/MultiSelect";
 import Plus from "@/components/icons/Plus";
+import { Controller } from "react-hook-form";
 
 const ProductStatus = ({
   register,
   errors,
+  control,
   selectedOptions,
   setSelectedOptions,
   setIsAddModalOpen, // کنترل مودال افزودن تگ
@@ -53,30 +55,40 @@ const ProductStatus = ({
 
   return (
     <div className="w-full flex flex-col gap-y-4">
-      <div className="flex items-center justify-center gap-x-2 p-4 border rounded">
+      <div className="flex items-center justify-center gap-x-2 p-4  rounded">
         <label htmlFor="tag" className="w-full flex flex-col gap-y-1">
-          <span className="text-sm">برچسب*</span>
-          <MultiSelect
-            items={tags}
-            selectedItems={selectedOptions}
-            handleSelect={handleOptionsChange}
-            className="w-full"
+          <span className="text-sm pr-7 pb-2">برچسب</span>
+          <Controller
+            control={control}
             name="tags"
-            icon={<Tag size={24} />}
+            render={({ field: { onChange, value } }) => (
+              <MultiSelect
+                items={tags}
+                selectedItems={value || []}
+                handleSelect={onChange}
+                icon={<Tag size={24} />}
+                placeholder="چند مورد انتخاب کنید"
+                className={"w-full h-12"}
+                returnType="id"
+              />
+            )}
           />
+
         </label>
-        <div className="mt-7 flex justify-start">
-          <button
-            type="button"
-            onClick={() => setIsAddModalOpen(true)}
-            className="p-4 bg-green-400 dark:bg-blue-600 text-white rounded hover:bg-green-600 dark:hover:bg-blue-400 transition-colors"
-            aria-label="افزودن تگ جدید"
-          >
-            <Plus />
-          </button>
-        </div>
+
       </div>
-      <StatusSwitch label="آیا این محصول ویژه است" id="isFeatured" register={register} />
+
+
+      <Controller
+        control={control}
+        name="isSpecial"
+        render={({ field: { onChange, value } }) => (
+          <StatusSwitch defaultChecked={value} label="آیا این محصول ویژه است" onChange={onChange} />
+
+        )}
+      />
+
+
     </div>
   );
 };

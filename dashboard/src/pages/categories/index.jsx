@@ -5,6 +5,7 @@ import {
 } from "@/services/category/categoryApi";
 import DeleteModal from "@/components/shared/modal/DeleteModal";
 import { toast } from "react-hot-toast";
+import Edit from "@/components/icons/Edit";
 import StatusIndicator from "@/components/shared/tools/StatusIndicator";
 import SkeletonItem from "@/components/shared/skeleton/SkeletonItem";
 import Pagination from "@/components/shared/pagination/Pagination";
@@ -31,27 +32,27 @@ const ListCategory = () => {
     { isLoading: isRemoving, data: deleteCategory, error: removeError }
   ] = useDeleteCategoryMutation();
 
-useEffect(() => {
-  if (isLoading) {
-    toast.loading("Fetching Brands...", { id: "categoriesData" });
-  }
-  if (data && data?.acknowledgement) {
-    toast.success(data.description, { id: "categoriesData" });
-  }
+  useEffect(() => {
+    if (isLoading) {
+      toast.loading("Fetching Brands...", { id: "categoriesData" });
+    }
+    if (data && data?.acknowledgement) {
+      toast.success(data.description, { id: "categoriesData" });
+    }
 
-  if (data && !data?.acknowledgement) {
-    toast.error(error?.data?.description || "خطایی رخ داده", { id: "categoriesData" });
-  }
+    if (data && !data?.acknowledgement) {
+      toast.error(error?.data?.description || "خطایی رخ داده", { id: "categoriesData" });
+    }
 
-}, [error, data, isLoading, categories]);
+  }, [error, data, isLoading, categories]);
 
   return (
     <ControlPanel>
       <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-        <AddButton link="./add" />
+      <AddButton link="./add" />
       <div className="mt-8 w-full grid grid-cols-12 text-slate-400 px-4 ">
         <div className="col-span-11 lg:col-span-3  text-sm">
-          <span className="hidden lg:flex">نویسنده</span>
+          <span className="hidden lg:flex">عکس و عنوان</span>
           <span className="flex lg:hidden">نویسنده و عنوان</span>
         </div>
         <div className="col-span-8 lg:col-span-2 hidden lg:flex  text-sm">
@@ -60,14 +61,14 @@ useEffect(() => {
         <div className="lg:col-span-4 lg:flex hidden text-sm md:block">
           توضیحات
         </div>
-        <div className="lg:col-span-2 lg:flex hidden text-sm md:block"> تگ ها</div>
+        <div className="lg:col-span-2 lg:flex hidden text-sm md:block"> زیر مجموعه </div>
         <div className="col-span-1 md:block text-sm">عملیات</div>
       </div>
 
       {isLoading ? (
         <SkeletonItem repeat={5} />
       ) : categories.length === 0 ? (
-            <SkeletonItem repeat={5} />
+        <SkeletonItem repeat={5} />
 
 
       ) : (
@@ -116,25 +117,23 @@ useEffect(() => {
                   </article>
                 </div>
 
-                <div className="lg:col-span-2 hidden gap-2 lg:flex justify-left items-center text-right">
-                  <span className="w-52 overflow-x-auto scrollbar-hide text-sm flex flex-row gap-x-2">
-                    {(category.tags || []).map((tag, index) => (
-                      <span
-                        key={index}
-                        className="border px-1 py-0.5 rounded-sm whitespace-nowrap"
-                      >
-                        {tag.title}
-                      </span>
-                    ))}
+                <div className="lg:col-span-4 hidden lg:flex justify-center  items-center text-right">
+                  <span className="w-52 overflow-x-auto  items-center justify-end mr-12 scrollbar-hide text-sm flex flex-row gap-x-2">
+                    {category.parentCategory?.title}
                   </span>
                 </div>
 
-                <div className="lg:col-span-2 hidden gap-2 lg:flex justify-left items-center text-right">
-                 
-                </div>
+
 
                 <div className="col-span-2 md:col-span-1 gap-2 text-center flex justify-center items-center">
                   <article className="lg:flex-row flex flex-col justify-center gap-x-2  gap-y-2">
+                    <a
+                      type="button"
+                      className="edit-button"
+                      href={"/categories/" + category._id}
+                    >
+                      <Edit className="w-5 h-5" />
+                    </a>
                     <DeleteModal
                       message="آیا از حذف این دسته بندی اطمینان دارید؟"
                       isLoading={isRemoving}

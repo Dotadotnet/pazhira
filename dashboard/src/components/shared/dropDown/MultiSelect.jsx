@@ -17,19 +17,16 @@ const MultiSelect = ({
   );
 
   const handleItemSelect = (item) => {
-    const isAlreadySelected = selectedItems.some(
-      (selected) => selected.id === item.id
-    );
-    const updatedSelection = isAlreadySelected
-      ? selectedItems.filter((selected) => selected.id !== item.id)
-      : [...selectedItems, item];
-
-    handleSelect(updatedSelection);
+    if (selectedItems.includes(item.id)) {
+      handleSelect( selectedItems.filter((selected) => selected !== item.id ))
+    } else {
+      handleSelect([...selectedItems, item.id]);
+    }
   };
 
   const handleRemoveSelectedItem = (item) => {
     const updatedSelection = selectedItems.filter(
-      (selected) => selected.id !== item.id
+      (selected) => selected !== item.id
     );
     handleSelect(updatedSelection);
   };
@@ -52,35 +49,40 @@ const MultiSelect = ({
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className={`inline-flex justify-between items-center px-2 py-2 text-center text-sm font-medium text-gray-700 bg-white dark:!bg-[#0a2d4d] border border-gray-300 dark:border-blue-500  rounded-md shadow-sm focus:outline-none ${className}`}
+        className={`inline-flex justify-between items-center px-2 py-2 text-center text-sm font-medium text-gray-900 bg-gray-100 dark:!bg-[#0a2d4d] border border-gray-300 dark:border-blue-500  rounded-md shadow-sm focus:outline-none ${className}`}
       >
         <div className="flex gap-1 h-full overflow-x-hidden overflow-y-hidden scrollbar-hidden w-full whitespace-nowrap">
           {selectedItems.length > 0 ? (
-            selectedItems.map((item) => (
-              <div
-                key={item.id}
-                className="bg-blue-100  text-blue-700 px-2 py-1 rounded-md flex items-center gap-1 "
-              >
-                {icon && <span className="mr-1">{icon}</span>}
-                {item.value}
-                <span
-                  className="text-red-500"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleRemoveSelectedItem(item);
-                  }}
-                >
-                  &times;
-                </span>
-              </div>
-            ))
+            filteredItems.map((item) => {
+              if (selectedItems.includes(item.id)) {
+                return (
+                  <div
+                    key={item.id}
+                    className="bg-blue-100  text-blue-700 px-2 py-1 rounded-md flex items-center gap-1 "
+                  >
+                    {item.icon ? <div className="size-5" dangerouslySetInnerHTML={{ __html: item.icon }} /> : icon ? <span className="mr-1">{icon}</span> : <span className="mr-1"></span>}
+                    {item.value}
+                    <span
+                      className="text-red-500"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleRemoveSelectedItem(item);
+                      }}
+                    >
+                      &times;
+                    </span>
+                  </div>
+                )
+              }
+            })
+
           ) : (
-            <span className="text-gray-500">{placeholder}</span>
+            <span className="flex justify-center items-center mr-2 text-gray-500">{placeholder}</span>
           )}
         </div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="w-5 h-5 ml-2"
+          className={"size-7 transition-all ml-2 text-gray-900 dark:text-white" + " " + (isOpen ? "rotate-180" : "")}
           viewBox="0 0 20 20"
           fill="currentColor"
           aria-hidden="true"
@@ -93,7 +95,7 @@ const MultiSelect = ({
         </svg>
       </button>
       {isOpen && (
-        <div className="absolute mt-2 w-full bg-white dark:bg-gray-800 border border-gray-300 z-50 dark:border-gray-700 rounded-md shadow-lg  p-2">
+        <div className="absolute mt-2 w-full bg-gray-100 dark:bg-gray-800 border border-gray-300 z-50 dark:border-gray-700 rounded-md shadow-lg  p-2">
           <input
             type="text"
             placeholder="جستجو کن"
@@ -105,13 +107,13 @@ const MultiSelect = ({
               <li
                 key={item.id}
                 onClick={() => handleItemSelect(item)}
-                className={`px-4 py-2 rounded-md cursor-pointer ${
-                  selectedItems.some((selected) => selected.id === item.id)
-                    ? "bg-blue-100 text-blue-700  flex gap-x-4 "
-                    : "bg-gray-100 hover:bg-blue-100 dark:bg-gray-700 dark:hover:bg-gray-900  flex gap-x-4 "
-                }`}
+                className={`px-4 py-2 hover:opacity-80 rounded-md cursor-pointer ${selectedItems.includes(item.id)
+                  ? "bg-gray-300 dark:bg-gray-700 text-blue-700  flex gap-x-4 "
+                  : "bg-white hover:bg-gray-200 dark:bg-gray-900  flex gap-x-4 "
+                  }`}
               >
-                <span>{item.value}</span>
+                <span><div className="size-6 dark:text-white text-gray-900" dangerouslySetInnerHTML={{ __html: item.icon }} /></span>
+                <span className="dark:text-white text-gray-900">{item.value}</span>
                 {item.description && (
                   <Tooltip position="left" bg="dark" size="sm">
                     {item.description}

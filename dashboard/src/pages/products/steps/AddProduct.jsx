@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast";
 import NavigationButton from "@/components/shared/button/NavigationButton";
 import { useForm } from "react-hook-form";
 import SendButton from "@/components/shared/button/SendButton";
-import { useAddProductMutation } from "@/services/product/productApi";
+import { useAddProductMutation, useUpdateProductMutation } from "@/services/product/productApi";
 import ThumbnailStep from "./Thumbnail";
 import StepIndicator from "./StepIndicator";
 import Title from "./Title";
@@ -12,15 +12,18 @@ import Features from "./Features";
 import Campaign from "./Campaign";
 import ProductStatus from "./ProductStatus";
 import AddTag from "../../tags/add";
+import Category from "./Category";
+import { useNavigate } from "react-router-dom";
 
-const StepAddProduct = () => {
+const StepAddProduct = ({ prevData }) => {
   const [thumbnail, setThumbnail] = useState(null);
   const [gallery, setGallery] = useState(null);
+  const [updateProduct, { isLoading: isUpdateing, data: updateData, error: updateError }] = useUpdateProductMutation();
   const [addProduct, { isLoading, data, error }] = useAddProductMutation();
   const [currentStep, setCurrentStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState({});
   const [invalidSteps, setInvalidSteps] = useState({});
-  const [features, setFeatures] = useState([{icon:'', title: "", content: [""] }]);
+  const [features, setFeatures] = useState([{ icon: '', title: "", content: [""] }]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const openAddModal = () => setIsAddModalOpen(true);
@@ -35,140 +38,148 @@ const StepAddProduct = () => {
     handleSubmit,
     watch
   } = useForm({
-    mode: "onChange"
+    mode: "onChange",
+    defaultValues: prevData
   });
-  const totalSteps = 6;
+  const totalSteps = 7;
 
   const onSubmit = async (data) => {
+
     const selectedTags2 = selectedTags.map((tag) => tag.id);
 
     const formData = new FormData();
     formData.append("thumbnail", thumbnail);
-    for (let i = 0; i < gallery.length; i++) {
-      formData.append("gallery", gallery[i]);
+    if (gallery) {
+      for (let i = 0; i < gallery.length; i++) {
+        formData.append("gallery", gallery[i]);
+      }
     }
     formData.append("title", data.title);
+    formData.append("campaignState", data.campaignState);
+    formData.append("campaignTitle", data.campaignTitle);
+    formData.append("title_en", data.title_en);
     formData.append("summary", data.summary);
     formData.append("description", data.description);
     formData.append("category", data.category);
-    formData.append("features", JSON.stringify(features));
-    formData.append("discountAmount", data.discountAmount);
-    formData.append("isFeatured", data.isFeatured);
-    formData.append(
-      "campaign",
-      JSON.stringify({
-        title: data.campaignTitle,
-        state: data.campaignState
-      })
-    );
-    formData.append("tags", JSON.stringify(selectedTags2));
-
-    formData.append(
-      "variations",
-      JSON.stringify(
-        data.variations.map((variation) => ({
-          unit: variation.unit,
-          price: variation.price,
-          lowStockThreshold: variation.lowStockThreshold,
-          stock: variation.stock
-        }))
-      )
-    );
-
-    addProduct(formData);
+    formData.append("brand", data.brand);
+    formData.append("isSpecial", !data.isSpecial || data.isSpecial == "false" ? false : true);
+    formData.append("tags", JSON.stringify(data.tags ? data.tags : []));
+    formData.append("features", JSON.stringify(data.features));
+    formData.append("variations", JSON.stringify(data.variations));
+    if (prevData) {
+      updateProduct({ id: prevData._id, body: formData })
+    } else {
+      addProduct(formData);
+    }
   };
+ 
+  const navigate = useNavigate() ;
 
-  useEffect(() => {
-    if (isLoading) {
-      toast.loading("در حال افزودن محصول...", { id: "addProduct" });
-    }
 
-    if (data) {
-      toast.success(data?.description, { id: "addProduct" });
-    }
 
-    if (error?.data) {
-      toast.error(error?.data?.description, { id: "addProduct" });
-    }
-  }, [isLoading, data, error]);
+    useEffect(() => {
+      if (isLoading) {
+        toast.loading("در حال افزودن محصول ...", { id: "addProduct" });
+      }
+  
+       if (isUpdateing) {
+        toast.loading("در حال اعمال تغییرات ...", { id: "updateProduct" });
+      }
+  
+      if (data?.acknowledgement) {
+        toast.success(data?.description, { id: "addProduct" });
+        navigate("/products");
+      }
+  
+      if (updateData?.acknowledgement) {
+        toast.success(updateData?.description, { id: "updateProduct" });
+        window.location.reload();
+      }
+  
+      if (error?.data) {
+        toast.error(error?.data?.description, { id: "addProduct" });
+      }
+
+    }, [isLoading , isUpdateing , data, updateData, error]);
+  
 
   const nextStep = async () => {
-    let valid = false;
-    switch (currentStep) {
-      case 1:
-        valid = await trigger("thumbnail");
-        // if (!valid) {
-        //   toast.error("لطفاً تصویر بند انگشتی را وارد کنید");
-        //   setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
-        //   return;
-        // }
-        valid = true;
-        break;
-      case 2:
-        valid = await trigger("gallery");
-        // if (!valid) {
-        //   toast.error("لطفاً گالری محصول  را وارد کنید");
-        //   setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
-        //   return;
-        // }
-        valid = true;
-        break;
-      case 3:
-        valid = await trigger("");
-        // if (!valid) {
-        //   toast.error("لطفاً عنوان محصول را وارد کنید");
-        //   setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
-        //   return;
-        // }
-        // valid = await trigger("");
-        // if (!valid) {
-        //   toast.error("لطفاً خلاصه ای کوتاه از محصول را وارد کنید");
-        //   setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
-        //   return;
-        // }
-        valid = await trigger("");
-        // if (!valid) {
-        //   toast.error("لطفاً توضیحات محصول را وارد کنید");
-        //   setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
-        //   return;
-        // }
-        valid = await trigger("category");
-        // if (!valid) {
-        //   toast.error("لطفاً دسته بندی محصول را وارد کنید");
-        //   setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
-        //   return;
-        // }
-        break;
+    let valid = true;
+    // switch (currentStep) {
+    //   case 1:
+    //     valid = await trigger("thumbnail");
+    //     // if (!valid) {
+    //     //   toast.error("لطفاً تصویر بند انگشتی را وارد کنید");
+    //     //   setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
+    //     //   return;
+    //     // }
+    //     valid = true;
+    //     break;
+    //   case 2:
+    //     valid = await trigger("gallery");
+    //     // if (!valid) {
+    //     //   toast.error("لطفاً گالری محصول  را وارد کنید");
+    //     //   setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
+    //     //   return;
+    //     // }
+    //     valid = true;
+    //     break;
+    //   case 3:
+    //     // valid = await trigger("");
+    //     // if (!valid) {
+    //     //   toast.error("لطفاً عنوان محصول را وارد کنید");
+    //     //   setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
+    //     //   return;
+    //     // }
+    //     // valid = await trigger("");
+    //     // if (!valid) {
+    //     //   toast.error("لطفاً خلاصه ای کوتاه از محصول را وارد کنید");
+    //     //   setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
+    //     //   return;
+    //     // }
+    //     // valid = await trigger("");
+    //     // if (!valid) {
+    //     //   toast.error("لطفاً توضیحات محصول را وارد کنید");
+    //     //   setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
+    //     //   return;
+    //     // }
+    //     // valid = await trigger("category");
+    //     // if (!valid) {
+    //     //   toast.error("لطفاً دسته بندی محصول را وارد کنید");
+    //     //   setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
+    //     //   return;
+    //     // }
+    //     break;
 
-      case 4:
-        valid = await trigger("features");
-        // if (!valid) {
-        //   toast.error("لطفاً ویژگی های محصول را وارد کنید");
-        //   setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
-        //   return;
-        // }
-        break;
-      case 5:
-        valid = await trigger("campaignTitle");
-        // if (!valid) {
-        //   toast.error("لطفاً عنوان کمپین فروش را تعیین کنید");
-        //   setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
-        //   return;
-        // }
-        valid = await trigger("campaignState");
-        // if (!valid) {
-        //   toast.error("لطفاً نوع کمپین فروش را تعیین کنید");
-        //   setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
-        //   return;
-        // }
-        break;
-      default:
-        break;
-    }
+    //   case 4:
+    //     valid = await trigger("features");
+    //     // if (!valid) {
+    //     //   toast.error("لطفاً ویژگی های محصول را وارد کنید");
+    //     //   setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
+    //     //   return;
+    //     // }
+    //     break;
+    //   case 5:
+    //     valid = await trigger("campaignTitle");
+    //     // if (!valid) {
+    //     //   toast.error("لطفاً عنوان کمپین فروش را تعیین کنید");
+    //     //   setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
+    //     //   return;
+    //     // }
+    //     valid = await trigger("campaignState");
+    //     // if (!valid) {
+    //     //   toast.error("لطفاً نوع کمپین فروش را تعیین کنید");
+    //     //   setInvalidSteps((prev) => ({ ...prev, [currentStep]: true }));
+    //     //   return;
+    //     // }
+    //     break;
+    //   default:
+    //     break;
+    // }
 
     if (valid) {
-      setCompletedSteps((prev) => ({ ...prev, [currentStep]: true }));
       setInvalidSteps((prev) => ({ ...prev, [currentStep]: false }));
+      setCompletedSteps((prev) => ({ ...prev, [currentStep]: true }));
       setCurrentStep((prevStep) => prevStep + 1);
     }
   };
@@ -180,6 +191,7 @@ const StepAddProduct = () => {
       case 1:
         return (
           <ThumbnailStep
+            watch={watch}
             thumbnail={thumbnail}
             setThumbnail={setThumbnail}
             nextStep={nextStep}
@@ -190,6 +202,7 @@ const StepAddProduct = () => {
       case 2:
         return (
           <Gallery
+            watch={watch}
             setGallery={setGallery}
             nextStep={nextStep}
             prevStep={prevStep}
@@ -206,19 +219,35 @@ const StepAddProduct = () => {
             nextStep={nextStep}
           />
         );
-
       case 4:
         return (
-          <Features
+          <Category
             features={features}
             setFeatures={setFeatures}
+            control={control}
+            watch={watch}
             register={register}
+            setValue={setValue}
             errors={errors}
             prevStep={prevStep}
             nextStep={nextStep}
           />
         );
       case 5:
+        return (
+          <Features
+            features={features}
+            control={control}
+            setValue={setValue}
+            setFeatures={setFeatures}
+            register={register}
+            watch={watch}
+            errors={errors}
+            prevStep={prevStep}
+            nextStep={nextStep}
+          />
+        );
+      case 6:
         return (
           <Campaign
             register={register}
@@ -229,15 +258,16 @@ const StepAddProduct = () => {
             control={control}
           />
         );
-      case 6:
+      case 7:
         return (
           <ProductStatus
-          register={register}
-          errors={errors}
-          setSelectedOptions={setSelectedTags}
-          selectedOptions={selectedTags}
-          setIsAddModalOpen={setIsAddModalOpen}
-        />
+            register={register}
+            control={control}
+            errors={errors}
+            setSelectedOptions={setSelectedTags}
+            selectedOptions={selectedTags}
+            setIsAddModalOpen={setIsAddModalOpen}
+          />
         );
       default:
         return null;
@@ -280,7 +310,7 @@ const StepAddProduct = () => {
         {renderStepContent(currentStep)}
 
         {currentStep === totalSteps && (
-          <div className="flex justify-between mt-12">
+          <div className="flex flex-row-reverse justify-between mt-12">
             <SendButton />
             <NavigationButton direction="prev" onClick={prevStep} />
           </div>

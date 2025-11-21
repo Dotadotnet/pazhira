@@ -7,6 +7,7 @@ import Plus from "@/components/icons/Plus";
 import { Controller } from "react-hook-form";
 import Dropdown from "@/components/shared/dropDown/Dropdown";
 import { toast } from "react-hot-toast";
+import { useGetFeaturesQuery } from "@/services/feature/featureApi";
 
 const TagsStep = ({ control, errors, register }) => {
   const {
@@ -19,6 +20,14 @@ const TagsStep = ({ control, errors, register }) => {
     status: "all",
     search: ""
   });
+
+    const { data: fetchFeatureData, isLoading, error, refetch } = useGetFeaturesQuery({
+      page: 1,
+      limit: Infinity,
+      status: "all",
+      search: ""
+    });
+  
 
   const {
     isLoading: fetchingCategories,
@@ -52,78 +61,68 @@ const TagsStep = ({ control, errors, register }) => {
     [fetchTagsData]
   );
 
-  useEffect(() => {
-    if (fetchingTags) {
-      toast.loading("در حال دریافت تگ ها بندی ...", { id: "fetchTags" });
-    }
+  const features = useMemo(
+    () =>
+      fetchFeatureData?.data?.map((feature) => (
 
-    if (fetchTagsData) {
-      toast.success(fetchTagsData?.about, {
-        id: "fetchTags"
-      });
-    }
+        {
+          id: feature._id,
+          value: feature.nameFa,
+          label: feature.nameEn,
+          icon: feature.icon.symbol
+        }
 
-    if (fetchTagsError) {
-      toast.error(fetchTagsError?.data?.about, {
-        id: "fetchTags"
-      });
-    }
-    if (fetchingCategories) {
-      toast.loading("در حال دریافت دسته بندی ...", { id: "fetchCategories" });
-    }
 
-    if (fetchCategoriesData) {
-      toast.success(fetchCategoriesData?.about, {
-        id: "fetchCategories"
-      });
-    }
+      )),
+    [fetchFeatureData]
+  );
 
-    if (fetchCategoriesError) {
-      toast.error(fetchCategoriesError?.data?.about, {
-        id: "fetchCategories"
-      });
-    }
-  }, [
-    fetchingTags,
-    fetchTagsData,
-    fetchTagsError,
-    fetchCategoriesData,
-    fetchCategoriesData,
-    fetchCategoriesError
-  ]);
   return (
     <div>
-      <div className="flex flex-col gap-y-4 h-full p-2">
-        <Controller
-          control={control}
-          name="category"
-          render={({ field }) => (
-            <div className="flex flex-col gap-y-2 w-full">
+      <div className="flex flex-col gap-y-6">
               <label
-                htmlFor="category"
-                className="flex flex-col text-sm gap-y-2"
+                htmlFor="features"
+                className="flex flex-col text-right gap-y-3"
               >
-                <span className="text-sm">دسته بندی</span>
-                <Dropdown
-                  items={categories}
-                  sendId={true}
-                  className="w-full h-12"
-                  handleSelect={field.onChange}
-                  value={field.value}
-                />
+                ویژگی های محصول را انتخاب کنید :
+                <div className="col-span-2">
+                  <Controller
+                    control={control}
+                    name={`features`}
+                    rules={{
+                      required: "وارد کردن ویژگی اجباری است",
+                    }}
+                    render={({ field: { onChange, value } }) => (
+                      <MultiSelect
+                        items={features}
+                        selectedItems={Array.isArray(value) ? value : []}
+                        handleSelect={onChange}
+                        placeholder="چند مورد انتخاب کنید"
+                        className={"w-full h-12"}
+                        returnType="id"
+                      />
+      
+                    )}
+                  />
+                </div>
+                {errors?.icon && (
+                  <span className="text-red-500 text-sm">
+                    {errors?.icon.message}
+                  </span>
+                )}
               </label>
             </div>
-          )}
-        />
+
+      <div className="flex flex-col gap-y-4 mt-3 h-full p-2">
+    
         <div className="flex flex-col gap-y-2 w-full  ">
           <div className="flex-1 flex items-center justify-between gap-2 gap-y-2 w-full">
             <div className="flex flex-col flex-1">
               <label htmlFor="tags" className="flex flex-col gap-y-2 ">
-                <span className="text-sm"> تگ ها</span>
+                <span className=" text-gray-900 dark:text-white"> تگ ها :</span>
                 <Controller
                   control={control}
                   name="tags"
-                  rules={{ required: "انتخاب تگ الزامی است" }}
                   render={({ field: { onChange, value } }) => (
                     <MultiSelect
                       items={tags}

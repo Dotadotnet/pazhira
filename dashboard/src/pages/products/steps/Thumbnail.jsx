@@ -1,12 +1,13 @@
-import React ,{useState} from "react";
+import React, { useState } from "react";
 import SkeletonImage from "@/components/shared/skeleton/SkeletonImage";
 import NavigationButton from "@/components/shared/button/NavigationButton";
 import ThumbnailUpload from "@/components/shared/gallery/ThumbnailUpload";
 
-const ThumbnailStep = ({ nextStep, errors ,register,thumbnail,setThumbnail}) => {
-  const [thumbnailPreview, setThumbnailPreview] = useState(null);
+const ThumbnailStep = ({ nextStep, errors , watch , register, thumbnail, setThumbnail }) => {
 
-  
+  const image = watch(["thumbnail"])
+  const [thumbnailPreview, setThumbnailPreview] = useState(image[0]?.url ? image[0].url : null);
+
   return (
     <>
       <div className="flex flex-col items-center">
@@ -24,21 +25,22 @@ const ThumbnailStep = ({ nextStep, errors ,register,thumbnail,setThumbnail}) => 
           )}
         </div>
         <label htmlFor="thumbnail" className="flex flex-col text-center gap-y-2">
-        تصویر عنوان  محصول
-        <ThumbnailUpload
-          setThumbnailPreview={setThumbnailPreview}
-          setThumbnail={setThumbnail}
-          title={"لطفا یک تصویر بند انگشتی انتخاب کنید"}
-          register={register('thumbnail', { required: 'آپلود تصویر عنوان الزامی است' })}
-          maxFiles={1}
-        />
-      </label>
-      {errors?.thumbnail && (
-        <span className="text-red-500 text-sm">{errors?.thumbnail.message}</span>
-      )}
+          تصویر عنوان  محصول
+          <ThumbnailUpload
+
+            setThumbnailPreview={setThumbnailPreview}
+            setThumbnail={setThumbnail}
+            title={"لطفا یک تصویر بند انگشتی انتخاب کنید"}
+            register={register('thumbnail', { required: 'آپلود تصویر عنوان الزامی است' })}
+            maxFiles={1}
+          />
+        </label>
+        {errors?.thumbnail && (
+          <span className="text-red-500 text-sm">{errors?.thumbnail.message}</span>
+        )}
       </div>
 
-      <div className="flex justify-start mt-12">
+      <div className="flex justify-end mt-12">
         <NavigationButton direction="next" onClick={nextStep} />
       </div>
     </>

@@ -136,7 +136,7 @@ const TagsStep = ({ control, errors, register }) => {
                       items={tags}
                       selectedItems={value || []}
                       handleSelect={onChange}
-                      icon={<Tag />}
+                      icon={<Tag />} 
                       placeholder="چند مورد انتخاب کنید"
                       className={"w-full h-12"}
                       returnType="id"

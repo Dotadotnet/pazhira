@@ -5,13 +5,15 @@ import Plus from "@/components/icons/Plus";
 import Trash from "@/components/icons/Trash";
 import Edit from "@/components/icons/Edit";
 import UnitPrice from "./UnitPrice";
-import { useFieldArray } from "react-hook-form";
+import { Controller, useFieldArray } from "react-hook-form";
 import NavigationButton from "@/components/shared/button/NavigationButton";
 import { useGetWarrantiesQuery } from "@/services/warranty/warrantyApi";
 import { useGetColorsQuery } from "@/services/color/colorApi";
 import { useGetInsurancesQuery } from "@/services/insurance/insuranceApi";
 import Modal from "@/components/shared/modal/Modal";
 import Dropdown from "@/components/shared/dropDown/Dropdown";
+import Move from "@/components/icons/Move";
+import { ReactSortable } from "react-sortablejs";
 
 // Mock queries
 const useGetDigiplusQuery = () => ({
@@ -65,7 +67,8 @@ const Campaign = ({ register, errors, watch, control, prevStep, nextStep }) => {
   const {
     fields: variations,
     append,
-    remove
+    remove,
+    replace
   } = useFieldArray({
     control,
     name: "variations"
@@ -98,8 +101,8 @@ const Campaign = ({ register, errors, watch, control, prevStep, nextStep }) => {
     () =>
       colorData?.data?.map((color) => ({
         id: color._id,
-        value: color._id,
-        label: color.title_fa
+        value: color.title_fa,
+        icon: `<div class=" rounded-full size-full" style="background-color : ${color.hex_code}" ></div>`
       })) || [],
     [colorData]
   );
@@ -113,6 +116,9 @@ const Campaign = ({ register, errors, watch, control, prevStep, nextStep }) => {
       })) || [],
     [insuranceData]
   );
+  const variationsWatch = watch("variations") ? watch("variations") : [];
+
+  const [variationsSort, setVariationsSort] = useState(variations);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingIndex, setEditingIndex] = useState(null);
@@ -150,37 +156,21 @@ const Campaign = ({ register, errors, watch, control, prevStep, nextStep }) => {
 
   const handleAddVariation = () => {
     append({
-      unit: "",
-      price: "",
+      price: 0,
       stock: 0,
+      offer : 0 ,
       lowStockThreshold: 10,
-      lead_time: 0,
-      rank: 0,
-      rate: 0,
       status: "",
-      properties: {
-        is_fast_shipping: false,
-        is_ship_by_seller: false,
-        is_multi_warehouse: false,
-        has_similar_variants: false,
-        is_rural: false,
-        in_techkala_warehouse: false
-      },
-      techplus: "",
-      warranty: "",
-      color: "",
-      seller: "",
-      techclub: { point: 0 },
-      insurance: "",
-      shipment_methods: "",
-      has_importer_price: false,
-      manufacture_price_not_exist: false,
-      has_best_price_in_last_month: false,
-      variant_badges: [],
-      creator: ""
+      warranty: null,
+      color: null ,
+      insurance: null,
+      title: "",
+      features: []
     });
     openModal(variations.length);
   };
+
+console.log(variationsWatch);
 
   return (
     <>
@@ -188,7 +178,7 @@ const Campaign = ({ register, errors, watch, control, prevStep, nextStep }) => {
         {/* Campaign Section */}
         <label
           htmlFor="campaign"
-          className="w-full flex p-4 rounded flex-col border gap-y-1"
+          className="w-full flex p-4 rounded flex-col gap-y-1"
         >
           <span className="text-sm">کمپین فروش*</span>
           <div className="flex flex-row gap-x-4">
@@ -211,19 +201,35 @@ const Campaign = ({ register, errors, watch, control, prevStep, nextStep }) => {
               placeholder="عنوان کمپین فروش را وارد کنید"
               required
             />
-            <Dropdown
-              name="campaignState"
-              id="campaignState"
-              items={[
-                { value: "جدید", label: "جدید" },
-                { value: "تخفیف‌دار", label: "تخفیف‌دار" },
-                { value: "تمام‌شده", label: "تمام‌شده" },
-                { value: "در-حال-فروش", label: "در حال فروش" }
-              ]}
-              placeholder="یک مورد انتخاب کنید"
-              className={"w-full h-12"}
-              returnType="id"
+            <Controller
+              control={control}
+              name={`campaignState`}
+              rules={{
+                required: "وارد کردن ویژگی اجباری است",
+              }}
+              render={({ field: { onChange, value } }) => {
+                return (
+                  <Dropdown
+                    name="campaignState"
+                    id="campaignState"
+                    value={value}
+                    sendId={true}
+                    iconOnly={false}
+                    onChange={onChange}
+                    className={"w-full h-12"}
+                    items={[
+                      { value: "جدید", id: "new" },
+                      { value: "تخفیف‌ دار", id: "offer" },
+                      { value: "تمام‌ شده", id: "SoldOut" },
+                      { value: "در حال فروش", id: "Selling" }
+                    ]}
+                    placeholder="انتخاب کنید"
+                    returnType="id"
+                  />
+                )
+              }}
             />
+
           </div>
           {errors.campaignTitle && (
             <span className="text-red-500 text-sm">
@@ -262,26 +268,41 @@ const Campaign = ({ register, errors, watch, control, prevStep, nextStep }) => {
           className="flex w-full flex-col gap-y-2 p-2 max-h-[300px] overflow-y-auto"
         >
           <span className="text-sm">درج قیمت بر اساس واحد*</span>
-          <div className="flex flex-col gap-y-4">
-            {variations.map((field, index) => (
-              <div key={field.id} className="flex items-center gap-x-2">
-                <span>نسخه {index + 1}</span>
-                <button
-                  type="button"
-                  className="bg-blue-100 dark:bg-green-100 border border-blue-900 dark:border-green-900 text-blue-900 dark:text-green-900 py-1 rounded flex flex-row gap-x-1 items-center px-2 w-fit text-xs"
-                  onClick={() => openModal(index)}
-                >
-                  <Edit className="w-4 h-4" /> ویرایش
-                </button>
-                <button
-                  type="button"
-                  className="bg-red-100  border border-red-900  text-red-900  py-1 rounded flex flex-row gap-x-1 items-center px-2 w-fit text-xs"
-                  onClick={() => remove(index)}
-                >
-                  <Trash className="w-4 h-4" /> حذف
-                </button>
-              </div>
-            ))}
+          <div className="flex flex-col w-full gap-y-4">
+            <ReactSortable
+              animation={300}
+              delayOnTouchStart={true}
+              delay={2}
+              list={variationsWatch}
+              setList={replace}
+              handle={'.handle'}
+            >
+              {variationsWatch.map((field, index) => (
+                <div key={field.id} className="flex mt-3 items-center w-full justify-between  gap-x-2">
+                  <span className="text-gray-800 dark:text-white">{field.title ? field.title : "عنوان وارد نشده"}</span>
+                  <div className="flex gap-3">
+                    <button
+                      type="button"
+                      className="bg-blue-100 dark:bg-green-100 border border-blue-900 dark:border-green-900 text-blue-900 dark:text-green-900 py-1 rounded flex flex-row gap-x-1 items-center px-2 w-fit text-xs"
+                      onClick={() => openModal(index)}
+                    >
+                      <Edit className="w-4 h-4" /> 
+                    </button>
+                    <button
+                      type="button"
+                      className="bg-red-100  border border-red-900  text-red-900  py-1 rounded flex flex-row gap-x-1 items-center px-2 w-fit text-xs"
+                      onClick={() => remove(index)}
+                    >
+                      <Trash className="w-4 h-4" />
+                    </button>
+                    <button type="button" className="bg-blue-100 hover:cursor-grab active:cursor-grabbing  w-fit p-1 text-xs  border  rounded handle  border-blue-900  text-blue-900">
+                      <Move className=" size-4 " />
+                    </button>
+                  </div>
+
+                </div>
+              ))}
+            </ReactSortable>
             <button
               type="button"
               className="bg-green-100 dark:bg-blue-100 border border-green-900 dark:border-blue-900 text-green-900 dark:text-blue-900 py-1 rounded flex flex-row gap-x-1 items-center px-2 w-fit text-xs"
@@ -313,7 +334,7 @@ const Campaign = ({ register, errors, watch, control, prevStep, nextStep }) => {
       </Modal>
 
       {/* Navigation Buttons */}
-      <div className="flex justify-between mt-12">
+      <div className="flex flex-row-reverse justify-between mt-12">
         <NavigationButton direction="next" onClick={nextStep} />
         <NavigationButton direction="prev" onClick={prevStep} />
       </div>

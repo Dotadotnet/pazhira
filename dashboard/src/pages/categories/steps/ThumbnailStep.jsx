@@ -27,7 +27,7 @@ const ThumbnailStep = ({
     status: "all",
     search: ""
   });
-
+  
   const icons = useMemo(
     () =>
       fetchIconsData?.data?.map((icon) => ({
@@ -36,9 +36,12 @@ const ThumbnailStep = ({
         icon: icon.symbol,
         about: icon.about
       })),
-    [fetchIconsData]
-  );
-  const [thumbnailPreview, setThumbnailPreview] = useState(null);
+      [fetchIconsData]
+    );
+    
+    const image = watch(["thumbnail"])
+  const [thumbnailPreview, setThumbnailPreview] = useState(image[0]?.url ? image[0].url : null);
+  
 
   return (
     <>
@@ -66,6 +69,7 @@ const ThumbnailStep = ({
             setThumbnail={setThumbnail}
             title={"لطفا یک تصویر بند انگشتی انتخاب کنید"}
             maxFiles={1}
+            watch={watch}
             register={register("thumbnail")}
           />
         </label>
@@ -76,29 +80,29 @@ const ThumbnailStep = ({
         )}
       </div>
       <label
-        htmlFor="thumbnail"
+        htmlFor="icon"
         className="flex flex-col text-right gap-y-2"
       >
         آیکون
         <div className="col-span-2">
           <Controller
             control={control}
-            name={`icons`}
-            defaultValue="icons"
+            name={`icon`}
             render={({ field: { onChange, value } }) => (
               <Dropdown
                 items={icons}
-                placeholder=""
+                value={value}
+                onChange={onChange}
                 sendId={true}
                 iconOnly={false}
                 className="w-full"
-                error={errors?.icons}
+                error={errors?.featureType}
               />
             )}
           />
         </div>
       </label>
-      <div className="flex justify-start mt-12">
+      <div className="flex justify-end mt-12">
         <NavigationButton direction="next" onClick={nextStep} />
       </div>
     </>

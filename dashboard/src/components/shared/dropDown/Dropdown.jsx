@@ -7,40 +7,32 @@ const Dropdown = ({
   onChange,
   className = "h-12 w-full",
   isReadOnly = false,
-  iconOnly = false
+  iconOnly = false,
+  placeholder = "موردی انتخاب نشده است"
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef(null);
   const [tooltipContent, setTooltipContent] = useState("");
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState(value);
 
   const filteredItems = items.filter(
     (item) => typeof item?.value === "string" && item.value.includes(searchTerm)
   );
 
-  const handleItemSelect = (item) => {
+  const handleItemSelect = (id) => {
     if (!isReadOnly) {
-      setSelectedItem(item);
+      setSelectedItem(id);
       if (handleSelect) {
-        handleSelect(item);
+        handleSelect(id);
       } else if (onChange) {
-        onChange(item);
+        onChange(id);
       }
       setIsOpen(false);
       setTooltipContent("");
     }
   };
-
-  useEffect(() => {
-    if (value) {
-      const selected = items.find((item) => item.value === value);
-      setSelectedItem(selected || null);
-    } else {
-      setSelectedItem(null);
-    }
-  }, [value, items]);
 
   const handleMouseEnter = (e, description) => {
     const rect = e.target.getBoundingClientRect();
@@ -54,6 +46,13 @@ const Dropdown = ({
   const handleMouseLeave = () => {
     setTooltipContent("");
   };
+
+  const item = items.filter((item) => {
+    if (item.id == selectedItem) {
+      return (item)
+    }
+  })[0]
+
   return (
     <div className="relative w-full" ref={dropdownRef}>
       <button
@@ -63,25 +62,30 @@ const Dropdown = ({
           }`}
         disabled={isReadOnly}
       >
-        <span className="ml-2 dark:text-gray-100 flex justify-center text-center">
-          {iconOnly && selectedItem?.icon ? (
-            <div className="w-6 h-6"
-              dangerouslySetInnerHTML={{ __html: selectedItem.icon }} />
-          ) : (
-            <div className="flex items-center gap-2 ">
-              <span
-                className="w-5 h-5"
-                dangerouslySetInnerHTML={{ __html: selectedItem?.icon }}
-              />
-              <span>{selectedItem?.title || selectedItem?.value}</span>
-            </div>
-          )}
+        <span className="ml-2  flex justify-center text-center">
+          {
+            item ?
+              iconOnly && item?.icon ? (
+                <div className="w-6 h-6"
+                  dangerouslySetInnerHTML={{ __html: item.icon }} />
+              ) : (
+                <div className="flex items-center dark:text-gray-100 text-gray-800 gap-2 ">
+                  <span
+                    className={"w-5 h-5 dark:text-gray-100 text-gray-800" + (item?.icon)}
+                    dangerouslySetInnerHTML={{ __html: item?.icon }}
+                  />
+                  <span className="dark:text-gray-100 text-gray-800">{item?.title || item?.value}</span>
+                </div>
+              )
+              :
+              placeholder
+          }
         </span>
         {!isReadOnly && !iconOnly && (
           <span className="dark:text-gray-100">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="w-5 h-5 -mr-1"
+              className={"size-7 transition-all ml-2 text-gray-900 dark:text-white" + " " + (isOpen ? "rotate-180" : "")}
               viewBox="0 0 20 20"
               fill="currentColor"
               aria-hidden="true"
@@ -96,11 +100,11 @@ const Dropdown = ({
         )}
       </button>
       {isOpen && (
-        <ul className="absolute h-96 overflow-y-auto mt-2 w-full bg-white dark:bg-gray-800 border border-gray-300 !z-50 dark:border-gray-700 rounded-md shadow-lg  p-2">
+        <ul className="absolute max-h-60 overflow-y-auto  mt-2 w-full bg-white dark:bg-gray-800 border border-gray-300 !z-50 dark:border-gray-700 rounded-md shadow-lg  p-2">
           {filteredItems.map((item) => (
             <div
               key={item.id}
-              onClick={() => handleItemSelect(item)}
+              onClick={() => handleItemSelect(item.id)}
               onMouseEnter={(e) => handleMouseEnter(e, item.description)}
               onMouseLeave={handleMouseLeave}
               className={`marker:relative mt-1 bg-gray-100 hover:bg-blue-100 ${iconOnly ? "flex justify-center" : "px-2 py-2"

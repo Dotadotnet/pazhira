@@ -1,0 +1,147 @@
+.filepond--item {
+    height: 250px !important;
+}
+
+@media (min-width: 15em) {
+
+    .filepond--item {
+        width: calc(100% - 0.5em);
+    }
+}
+
+@media (min-width: 30em) {
+    .filepond--item {
+        width: calc(50% - 0.5em);
+    }
+
+    div.filepond--root.single .filepond--item {
+        width: calc(100% - 0.5em);
+    }
+}
+
+@media (min-width: 50em) {
+    .filepond--item {
+        width: calc(33.33% - 0.5em);
+    }
+
+    div.filepond--root.single .filepond--item {
+        width: calc(100% - 0.5em);
+    }
+}
+
+.filepond--file-action-button {
+    cursor: pointer;
+}
+
+
+/* the text color of the drop label*/
+.filepond--drop-label {
+    border-radius: 10px !important;
+    background-color: rgb(239, 239, 239) !important;
+    color: black;
+    font-size: larger !important;
+    font-family: "Vazir" !important;
+    font-weight: bolder !important;
+}
+
+.dark .filepond--drop-label {
+    border-radius: 10px !important;
+    background-color: rgb(22, 22, 36) !important;
+    color: white;
+    font-size: larger !important;
+    font-family: "Vazir" !important;
+    font-weight: bolder !important;
+}
+
+.filepond--panel-root {
+    background-color: rgb(239, 239, 239) !important;
+}
+
+.dark .filepond--panel-root {
+    background-color: rgb(22, 22, 36) !important;
+    color: white;
+}
+
+/* underline color for "Browse" button */
+
+/* the background color of the filepond drop area */
+.filepond--panel-root {
+    background-color: #000000;
+}
+
+/* the border radius of the drop area */
+
+
+/* the border radius of the file item */
+.filepond--item-panel {
+    border-radius: 10px;
+}
+
+/* the background color of the file and file panel (used when dropping an image) */
+.filepond--item-panel {
+    background-color: #555;
+}
+
+/* the background color of the drop circle */
+.filepond--drip-blob {
+    background-color: #999;
+}
+
+/* the background color of the black action buttons */
+.filepond--file-action-button {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* the icon color of the black action buttons */
+.filepond--file-action-button {
+    color: white;
+}
+
+/* the color of the focus ring */
+.filepond--file-action-button:hover,
+.filepond--file-action-button:focus {
+    box-shadow: 0 0 0 0.125em rgba(255, 255, 255, 0.7);
+}
+
+/* the text color of the file status and info labels */
+.filepond--file {
+    color: rgb(101, 79, 79);
+}
+
+/* error state color */
+[data-filepond-item-state*='error'] .filepond--item-panel,
+[data-filepond-item-state*='invalid'] .filepond--item-panel {
+    background-color: rgba(255, 0, 0, 0.818);
+}
+
+[data-filepond-item-state='processing-complete'] .filepond--item-panel {
+    background-color: green;
+}
+
+/* bordered drop area */
+
+
+a.filepond--credits {
+    display: none !important;
+}
+
+
+.polipop__notification-close {
+    text-align: center;
+    margin-left: 10px;
+}
+
+div.filepond--image-preview {
+    background-color: rgb(210, 210, 210) !important;
+}
+
+.dark div.filepond--image-preview {
+    background-color: rgb(46, 46, 46) !important;
+}
+
+span.filepond--file-info-sub,
+span.filepond--file-info-main {
+    color: white !important;
+    opacity: 1 !important;
+    font-weight: 500;
+}

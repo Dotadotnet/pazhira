@@ -59,7 +59,7 @@ const TitleStep = ({ register, errors, control, prevStep, nextStep }) => {
       </label>
 
 
-      <div className="flex justify-between mt-12">
+      <div className="flex flex-row-reverse justify-between mt-12">
         <NavigationButton direction="next" onClick={nextStep} />
 
         <NavigationButton direction="prev" onClick={prevStep} />

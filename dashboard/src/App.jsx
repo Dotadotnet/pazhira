@@ -32,8 +32,13 @@ import AddWarrantyCompany from "./pages/warrantyCompanies/add";
 import AddCategory from "./pages/categories/add";
 import Products from "./pages/products";
 import AddProduct from "./pages/products/add";
-import UpdateProduct from "./pages/products/update/index";
+import UpdateProduct from "./pages/products/update";
 import Colors from "./pages/colors";
+import PageTypeFeature from "./pages/features/type";
+import PageFeatures from "./pages/features/index";
+import AddFeatures from "./pages/features/index/add";
+import UpdateFeature from "./pages/features/index/update";
+import UpdateCategory from "./pages/categories/update";
 
 function App() {
   const location = useLocation();
@@ -63,8 +68,14 @@ function App() {
           <Route exact path="/blogs/add" element={<AddBlog />} />
           <Route exact path="/galleries" element={<Galleries />} />
           <Route exact path="/categories/add" element={<AddCategory />} />
+          <Route exact path="/features/add" element={<AddFeatures />} />
+          <Route exact path="/features" element={<PageFeatures />} />
+          <Route exact path="/features/:id" element={<UpdateFeature />} />
+          <Route exact path="/products/:id" element={<UpdateProduct />} />
+          <Route exact path="/categories/:id" element={<UpdateCategory />} />
           <Route exact path="/brands" element={<Brands />} />
           <Route exact path="/brands/add" element={<AddBrand />} />
+          <Route exact path="/type-features" element={<PageTypeFeature />} />
           <Route exact path="/colors" element={<Colors />} />
           <Route exact path="/insurancies" element={<Insurancies />} />
           <Route exact path="/insurancies/add" element={<AddInsurancies />} />
