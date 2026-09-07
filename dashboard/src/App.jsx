@@ -39,6 +39,8 @@ import PageFeatures from "./pages/features/index";
 import AddFeatures from "./pages/features/index/add";
 import UpdateFeature from "./pages/features/index/update";
 import UpdateCategory from "./pages/categories/update";
+import Settings from "./pages/settings";
+import PageIconShow from "./pages/icons/Show";
 
 function App() {
   const location = useLocation();
@@ -55,6 +57,8 @@ function App() {
       <Auth>
         <Routes>
           <Route exact path="/" element={<Dashboard />} />
+          <Route exact path="/iconShow" element={<PageIconShow />} />
+          <Route exact path="/settings" element={<Settings />} />
           <Route exact path="/signin" element={<SignIn />} />
           <Route exact path="/signup" element={<SignUp />} />
           <Route exact path="/users" element={<Users />} />

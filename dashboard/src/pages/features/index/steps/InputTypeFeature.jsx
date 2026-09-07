@@ -9,6 +9,7 @@ function InputTypeFeature({ type , preValue }) {
 
     const loader = modules[path] || modules["./typeFeatures/error.jsx"];
     var MyDynamicComponent = lazy(loader)
+
     return (
         <>
         <Suspense>
@@ -16,6 +17,7 @@ function InputTypeFeature({ type , preValue }) {
         </Suspense>
         </>
     );
+    
 }
 
 export default InputTypeFeature;

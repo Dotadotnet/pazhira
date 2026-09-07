@@ -1,0 +1,36 @@
+{
+  "HomePage": {
+    "title": "Merhaba dünya!"
+  },
+  "Navbar": {
+    "LoginAndRegister": "Giriş | Kayıt Ol",
+    "Home": "Ana Sayfa",
+    "Products": "Ürünler",
+    "Blog": "Blog",
+    "VoiceClients": "Müşteri Yorumları",
+    "Recruitment": "Kariyer",
+    "AboutUs": "Hakkımızda",
+    "CallUs": "İletişim",
+    "Branches": "Şubeler",
+    "BagCart": "Alışveriş Sepeti"
+  },
+  "SliderProduct": {
+    "PintoBeansTitle": "Konserve Barbunya",
+    "PintoBeansSummary": "Pişmiş ve hazır barbunya, anlık yemekler için ideal",
+    "PintoBeansDescription": "Islatmaya ve saatlerce pişirmeye gerek yok! Bu konserve barbunya, iri ve tamamen pişmiş taneleriyle protein ve lif açısından zengindir. İster barbunya yahnisi, ister vejetaryen burger, ister proteinli salata yapmak isteyin, sadece kapağını açın ve kullanın.",
+    "SweetCornTitle": "Konserve Tatlı Mısır",
+    "SweetCornSummary": "Tane tane tatlı mısır, çıtır ve taze",
+    "SweetCornDescription": "Bu konserve mısır, doğal tatlı lezzetini koruyan iri, altın sarısı tanelerden yapılmıştır. İlave şeker veya koruyucu madde içermez. Salatalar, mısır çorbası, omlet veya yemeklerin yanına basit bir garnitür olarak harikadır.",
+    "PeasTitle": "Konserve Yeşil Bezelye",
+    "PeasSummary": "Çıtır ve renkli yeşil bezelye, mutfağınıza bahar getirir",
+    "PeasDescription": "Bu yeşil bezelyeler, tazeliğin zirvesinde işlenerek güzel yeşil rengini ve sıkı dokusunu korur. C vitamini ve demir açısından zengindir. Bezelye çorbası, tavuk yahnisi, beşamel sos veya basit bir salata için hızlı ve besleyici bir seçimdir."
+  },
+  "Footer": {
+    "CallFactory": "Fabrika Telefonu",
+    "ManaggerBussines": "Ticari İşler Müdürü",
+    "SellMangger": "Satış Müdürü",
+    "Address": "Adres",
+    "AddressText": "Tahran, Robat Karim, Azadegan Bulvarı, Mofatteh Sokak, No. 19",
+    "FallowUsInMedia": "Bizi sosyal medyada takip edin"
+  }
+}

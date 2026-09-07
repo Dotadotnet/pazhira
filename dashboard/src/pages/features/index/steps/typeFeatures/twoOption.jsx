@@ -2,11 +2,23 @@
 import { useState } from "react";
 
 function TwoOption({ value }) {
-    let resultValue = value ? typeof value == "object" ? value : JSON.parse(value) : { one: { nameFa: "", nameEn: "" }, two: { nameFa: "", nameEn: "" } }
-    const [nameFaOne, setNameFaOne] = useState(resultValue[0].nameFa);
-    const [nameFaTwo, setNameFaTwo] = useState(resultValue[1].nameFa);
-    const [nameEnOne, setNameEnOne] = useState(resultValue[0].nameEn);
-    const [nameEnTwo, setNameEnTwo] = useState(resultValue[1].nameEn);
+    
+    let resultValue = [ { nameFa: "", nameEn: "" }, { nameFa: "", nameEn: "" } ] ;
+
+    
+    try {
+        let data = JSON.parse(value) ;        
+        if(data[0].nameEn || data[0].nameEn == '' ){
+            resultValue = data
+        }
+    } catch (error) {
+        
+    }  
+
+    const [nameFaOne, setNameFaOne] = useState(resultValue[0]?.nameFa);
+    const [nameFaTwo, setNameFaTwo] = useState(resultValue[1]?.nameFa);
+    const [nameEnOne, setNameEnOne] = useState(resultValue[0]?.nameEn);
+    const [nameEnTwo, setNameEnTwo] = useState(resultValue[1]?.nameEn);
 
     localStorage.setItem("inputData", JSON.stringify([{ nameEn : nameEnOne , nameFa : nameFaOne  }, { nameEn : nameEnTwo , nameFa : nameFaTwo  } ]) )
     

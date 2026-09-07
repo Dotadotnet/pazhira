@@ -1,0 +1,36 @@
+{
+  "HomePage": {
+    "title": "Hello world!"
+  },
+  "Navbar": {
+    "LoginAndRegister": "Login | Register",
+    "Home": "Home",
+    "Products": "Products",
+    "Blog": "Blog",
+    "VoiceClients": "Client Testimonials",
+    "Recruitment": "Careers",
+    "AboutUs": "About Us",
+    "CallUs": "Contact Us",
+    "Branches": "Branches",
+    "BagCart": "Shopping Cart"
+  },
+  "SliderProduct": {
+    "PintoBeansTitle": "Canned Pinto Beans",
+    "PintoBeansSummary": "Pre-cooked pinto beans, perfect for instant stews",
+    "PintoBeansDescription": "No more soaking and hours of cooking! These canned pinto beans are fully cooked with large, firm grains, rich in protein and fiber. Whether you're making bean stew, veggie burgers, or a protein salad, just open the can and use.",
+    "SweetCornTitle": "Canned Sweet Corn",
+    "SweetCornSummary": "Sweet, crunchy corn kernels, fresh and tender",
+    "SweetCornDescription": "This canned corn is made from large, golden kernels that retain their natural sweet flavor. No added sugar or preservatives. Great for salads, corn soup, omelets, or as a simple side dish.",
+    "PeasTitle": "Canned Green Peas",
+    "PeasSummary": "Crisp and colorful green peas, bringing a taste of spring to your kitchen",
+    "PeasDescription": "These green peas are processed at peak freshness to preserve their beautiful green color and firm texture. Rich in vitamin C and iron, they are a quick and nutritious choice for pea soup, chicken stew, béchamel sauce, or a simple salad."
+  },
+  "Footer": {
+    "CallFactory": "Factory Phone",
+    "ManaggerBussines": "Head of Commercial Affairs",
+    "SellMangger": "Sales Manager",
+    "Address": "Address",
+    "AddressText": "Tehran, Robat Karim, Azadegan Blvd, Mofatteh St, No. 19",
+    "FallowUsInMedia": "Follow us on social media"
+  }
+}

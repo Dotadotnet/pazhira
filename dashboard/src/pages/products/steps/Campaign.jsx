@@ -170,8 +170,6 @@ const Campaign = ({ register, errors, watch, control, prevStep, nextStep }) => {
     openModal(variations.length);
   };
 
-console.log(variationsWatch);
-
   return (
     <>
       <div className="w-full flex flex-col gap-y-4">

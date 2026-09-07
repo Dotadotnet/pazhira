@@ -47,6 +47,7 @@ app.use("/api/cart", require("./routes/cart.route"));
 app.use("/api/favorite", require("./routes/favorite.route"));
 app.use("/api/review", require("./routes/review.route"));
 app.use("/api/feature-type", require("./routes/featureType.route"));
+app.use("/api/settings", require("./routes/settings.route"));
 app.use("/api/feature", require("./routes/feature.route"));
 app.use("/api/payment", require("./routes/payment.route"));
 app.use("/api/purchase", require("./routes/purchase.route"));
