@@ -32,5 +32,18 @@
     "Address" : "آدرس",
     "AddressText" : "تهران، رباط کریم، بلوار آزادگان، خیابان مفتح، پلاک 19",
     "FallowUsInMedia" : "مارا در شبکه های اجتماعی دنبال کنید"
+  },
+  "BlogPage" : {
+    "CannedMushroomsTitle" : "کنسرو قارچ",
+    "CannedMushroomsCaption" : "طرز استفاده کنسرو قارچ",
+    "CannedLentilsTitle" : "کنسرو عدس",
+    "CannedLentilsCaption" : "طرز استفاده کنسرو عدس",
+    "CannedChickpeasTitle" : "کنسرو نخود",
+    "CannedChickpeasCaption" : "طرز استفاده کنسرو نخود"
+  },
+   "SliderCategory": {
+    "TypesOfJam": "انواع مربا",
+    "TypesOfPaste": "انواع رب",
+    "TypesOfPickles": "انواع ترشی"
   }
 }

@@ -13,7 +13,7 @@ import { useTranslations } from "use-intl";
 
 
 
-export default function MySlider() {
+export default function CategorySlider() {
     const [swiper, setSwiper] = useState(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [direction, setDirection] = useState(1);
@@ -22,7 +22,7 @@ export default function MySlider() {
     const t = useLocale();
     const class_lang = new language(t);
     const lang_now = class_lang.getInfo();
-    const sliderProT = useTranslations('SliderProduct');
+    const SliderCateT = useTranslations('SliderCategory');
 
     const handleSlideChange = (swiper) => {
         setDirection(
@@ -34,22 +34,21 @@ export default function MySlider() {
 
     const slides = [
         {
-            title: sliderProT("PintoBeansTitle"),
-            summary: sliderProT("PintoBeansSummary"),
-            description: sliderProT("PintoBeansDescription"),
-            image: "/products/pinto-beans.png",
+            title: SliderCateT("TypesOfJam"),
+            image: "/products/jam.png",
+            backImage: "/bg/strawberries.jpg"
+
         },
         {
-            title: sliderProT("SweetCornTitle"),
-            summary: sliderProT("SweetCornSummary"),
-            description: sliderProT("SweetCornDescription"),
-            image: "/products/sweet-corn.png",
+            title: SliderCateT("TypesOfPaste"),
+            image: "/products/paste.png",
+            backImage: "/bg/tomato.jpg"
+
         },
         {
-            title: sliderProT("PeasTitle"),
-            summary: sliderProT("PeasSummary"),
-            description: sliderProT("PeasDescription"),
-            image: "/products/Peas.png",
+            title: SliderCateT("TypesOfPickles"),
+            image: "/products/pickles.png",
+            backImage: "/bg/olive.jpg"
         },
     ];
 
@@ -121,8 +120,8 @@ export default function MySlider() {
     };
 
     return (
-        <div className="overflow-hidden p-3    flex justify-center  " >
-            <div className="flex  md:mt-10 mt-15 justify-center p-6 items-center w-full" >
+        <div className="    flex justify-center  " >
+            <div className="flex  justify-center  items-center w-full" >
 
                 <div className="flex h-full relative" >
                     <div className="w-2 h-full flex justify-center items-center  top-0 right-0  " >
@@ -130,7 +129,9 @@ export default function MySlider() {
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => { swiper.slideNext(); }}
-                            className="flex z-10 items-center sm:p-2 p-1.5 absolute right-4  cursor-pointer ltr:translate-x-10 rtl:translate-x-8 ltr:sm:translate-x-12 rtl:sm:translate-x-10 text-4xl sm:text-5xl justify-center bg-primary rounded-full text-white" >
+                            className="flex z-10 items-center sm:p-2 p-1.5 absolute right-4  cursor-pointer ltr:translate-x-10 rtl:translate-x-8 ltr:sm:translate-x-12 rtl:sm:translate-x-10 text-4xl sm:text-5xl justify-center
+                            bg-gray-300/50 border-white border  backdrop-blur-lg     shadow-gray-600  dark:shadow-gray-100 
+                            rounded-full text-white" >
                             <svg className="rtl:rotate-180" xmlns="http://www.w3.org/2000/svg " width="1em" height="1em" viewBox="0 0 24 24">
                                 <path d="M0 0h24v24H0z" fill="none" />
                                 <path fill="currentColor" d="M16 6a1 1 0 0 0-1.6-.8l-8 6a1 1 0 0 0 0 1.6l8 6A1 1 0 0 0 16 18z" />
@@ -139,15 +140,16 @@ export default function MySlider() {
                     </div>
                 </div>
 
-                <div className="relative  
+                <div style={{ backgroundImage: `url(${slides[activeIndex].backImage})` }} className="relative  
                   bg-cover
     bg-center
      after:absolute
+     transition-all
     after:inset-0
     after:bg-black/15
         after:rounded-4xl 
     dark:after:bg-black/15
- bg-[url('/bg/veg2.png')] md:bg-[url('/bg/veg1.png')] rounded-4xl w-full md:h-96 h-[60vh] md:w-3/4 ">
+  rounded-4xl size-96  ">
                     <div className="size-full absolute top-0 right-0" >
 
                     </div>
@@ -168,7 +170,7 @@ export default function MySlider() {
                         simulateTouch={true}
                         onSwiper={setSwiper}
                         onSlideChange={handleSlideChange}
-                        className="size-full"
+                        className="size-full banner-slider"
                     >
                         {slides.map((_, index) => (
                             <SwiperSlide className="relative size-full" key={index}>
@@ -181,10 +183,10 @@ export default function MySlider() {
                     {/* محتوای واقعی */}
                     <div className="pointer-events-none absolute inset-0">
 
-                        <div className="flex md:flex-row flex-col-reverse h-full items-center justify-between">
+                        <div className="flex flex-col-reverse h-full items-center justify-between">
 
                             {/* TEXT */}
-                            <div className="w-full md:w-1/2 sm:h-full h-3/4  ltr:md:pl-16 rtl:md:pr-16 px-8 flex items-center ">
+                            <div className="  h-1/2 px-5 flex items-center ">
                                 <AnimatePresence
                                     mode="wait"
                                     initial={false}
@@ -201,24 +203,21 @@ export default function MySlider() {
                                             ease: [0.22, 1, 0.36, 1],
                                         }}
                                     >
-                                        <h2 className="text-2xl text-white md:text-5xl font-bold">
+                                        <h2 style={{ textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)' }} className="text-3xl  text-white md:text-4xl font-bold">
                                             {slides[activeIndex].title}
                                         </h2>
 
-                                        <p className="mt-6 text-lg text-white md:text-xl font-bold">
-                                            {slides[activeIndex].summary}
-                                        </p>
+                                        {/* <p className="mt-6 text-base text-white md:text-lg font-bold">
+                                            {slides[activeIndex].caption}
+                                        </p> */}
 
-                                        <p className="mt-5 text-white opacity-90 ">
-                                            {slides[activeIndex].description}
-                                        </p>
                                     </motion.div>
                                 </AnimatePresence>
                             </div>
 
 
                             {/* IMAGE */}
-                            <div className="w-full md:w-1/2 animate-float z-10 sm:h-full h-1/4  flex justify-center items-center ">
+                            <div className="w-full animate-float z-10 h-1/2  flex justify-center items-center ">
                                 <AnimatePresence
                                     mode="wait"
                                     initial={false}
@@ -236,7 +235,7 @@ export default function MySlider() {
                                             duration: 0.6,
                                             ease: [0.22, 1, 0.36, 1],
                                         }}
-                                        className=" block   size-44 z-10  md:size-84 sm:translate-y-0 -translate-y-8 scale-150 "
+                                        className=" block   size-40 z-10  md:size-40 translate-y-3 scale-150 "
                                     />
 
                                 </AnimatePresence>
@@ -252,7 +251,9 @@ export default function MySlider() {
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={() => { swiper.slidePrev(); }}
-                            className="flex z-10 items-center sm:p-2 p-1.5 absolute right-4  cursor-pointer rtl:translate-x-11 ltr:translate-x-8 ltr:sm:translate-x-10 rtl:sm:translate-x-12 text-4xl sm:text-5xl justify-center bg-primary rounded-full text-white" >
+                            className="flex z-10 items-center sm:p-2 p-1.5 absolute right-4  cursor-pointer rtl:translate-x-11 ltr:translate-x-8 ltr:sm:translate-x-10 rtl:sm:translate-x-12 text-4xl sm:text-5xl justify-center 
+                            bg-gray-300/50 border-white border  backdrop-blur-lg     shadow-gray-600  dark:shadow-gray-100 
+                            rounded-full text-white" >
                             <svg className="ltr:rotate-180" xmlns="http://www.w3.org/2000/svg " width="1em" height="1em" viewBox="0 0 24 24">
                                 <path d="M0 0h24v24H0z" fill="none" />
                                 <path fill="currentColor" d="M16 6a1 1 0 0 0-1.6-.8l-8 6a1 1 0 0 0 0 1.6l8 6A1 1 0 0 0 16 18z" />

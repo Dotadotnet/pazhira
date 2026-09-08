@@ -42,9 +42,12 @@ function ButtonMenuMobile({ className = '' }) {
             <div className="flex flex-col mt-12 px-6 " >
                 {itemsNav.map((item, index) => {
                     return (
-                        <motion.div>
+                        <motion.div
+                            whileHover={{ translateX: "-30px", scale: 1.1 }}
+                            whileTap={{ scale: 0.95 }}
+                        >
                             <Link href={item.link} className="group" >
-                                <div className="py-2.5 flex gap-4 rtl:pr-8 ltr:pl-8 items-center group-hover:bg-white dark:group-hover:bg-gray-500 rounded-full transition-all " >
+                                <div className="py-2.5 flex gap-4 rtl:pr-8 ltr:pl-8 items-center rounded-full transition-all " >
                                     {cloneElement(item.icon, { className: "text-xl scale-110" })}
                                     <span style={{ fontWeight: 800 }} className="ltr:ml-1 font-bolder  flex items-center  rtl:mr-1 text-nowrap ">{navbar(item.name)}</span>
                                 </div>
