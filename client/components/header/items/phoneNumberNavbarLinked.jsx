@@ -12,6 +12,7 @@ function PhoneNumberNavbarLinked({className = ""}) {
             </div>
         </a>
     );
+    
 }
 
 export default PhoneNumberNavbarLinked;

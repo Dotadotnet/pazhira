@@ -1,13 +1,13 @@
 {
   "HomePage": {
-    "title": "Merhaba dünya!"
+    "title": "Merhaba Dünya!"
   },
   "Navbar": {
     "LoginAndRegister": "Giriş | Kayıt Ol",
     "Home": "Ana Sayfa",
     "Products": "Ürünler",
     "Blog": "Blog",
-    "VoiceClients": "Müşteri Yorumları",
+    "VoiceClients": "Müşteri Görüşleri",
     "Recruitment": "Kariyer",
     "AboutUs": "Hakkımızda",
     "CallUs": "İletişim",
@@ -16,21 +16,70 @@
   },
   "SliderProduct": {
     "PintoBeansTitle": "Konserve Barbunya",
-    "PintoBeansSummary": "Pişmiş ve hazır barbunya, anlık yemekler için ideal",
-    "PintoBeansDescription": "Islatmaya ve saatlerce pişirmeye gerek yok! Bu konserve barbunya, iri ve tamamen pişmiş taneleriyle protein ve lif açısından zengindir. İster barbunya yahnisi, ister vejetaryen burger, ister proteinli salata yapmak isteyin, sadece kapağını açın ve kullanın.",
+    "PintoBeansSummary": "Pişmiş ve kullanıma hazır barbunya, hızlı ve pratik yemekler için",
+    "PintoBeansDescription": "Artık fasulyeleri saatlerce suda bekletmeye ve pişirmeye gerek yok! Bu konserve, protein ve lezzet açısından zengin, iri taneli ve tamamen pişmiş barbunyalar içerir. İster barbunya yemeği, ister vejetaryen burger veya protein açısından zengin bir salata hazırlayın, kutuyu açmanız yeterli.",
     "SweetCornTitle": "Konserve Tatlı Mısır",
-    "SweetCornSummary": "Tane tane tatlı mısır, çıtır ve taze",
-    "SweetCornDescription": "Bu konserve mısır, doğal tatlı lezzetini koruyan iri, altın sarısı tanelerden yapılmıştır. İlave şeker veya koruyucu madde içermez. Salatalar, mısır çorbası, omlet veya yemeklerin yanına basit bir garnitür olarak harikadır.",
-    "PeasTitle": "Konserve Yeşil Bezelye",
-    "PeasSummary": "Çıtır ve renkli yeşil bezelye, mutfağınıza bahar getirir",
-    "PeasDescription": "Bu yeşil bezelyeler, tazeliğin zirvesinde işlenerek güzel yeşil rengini ve sıkı dokusunu korur. C vitamini ve demir açısından zengindir. Bezelye çorbası, tavuk yahnisi, beşamel sos veya basit bir salata için hızlı ve besleyici bir seçimdir."
+    "SweetCornSummary": "Tatlı ve çıtır mısır taneleri, taze ve lezzetli",
+    "SweetCornDescription": "Bu konserve tatlı mısır, doğal tatlılığını ve lezzetini koruyan iri ve altın sarısı mısır tanelerinden hazırlanır. İlave şeker ve koruyucu madde içermez. Salatalar, mısır çorbası, omlet veya yemeklerin yanında basit bir garnitür olarak mükemmeldir.",
+    "PeasTitle": "Konserve Bezelye",
+    "PeasSummary": "Çıtır ve canlı yeşil bezelyeler, baharın tadını mutfağınıza getirir",
+    "PeasDescription": "Bu bezelyeler, tazeliğin en yüksek olduğu dönemde işlenerek güzel yeşil renklerini ve diri dokularını korur. C vitamini ve demir açısından zengin olan bezelyeler; bezelye çorbası, tavuk yemekleri, beşamel sos veya basit bir salata için hızlı ve besleyici bir seçenektir."
   },
   "Footer": {
     "CallFactory": "Fabrika Telefonu",
-    "ManaggerBussines": "Ticari İşler Müdürü",
+    "ManaggerBussines": "Kıdemli Ticaret Müdürü",
     "SellMangger": "Satış Müdürü",
     "Address": "Adres",
-    "AddressText": "Tahran, Robat Karim, Azadegan Bulvarı, Mofatteh Sokak, No. 19",
+    "AddressText": "Tahran, Robat Karim, Azadegan Bulvarı, Mofatteh Caddesi, No: 19",
     "FallowUsInMedia": "Bizi sosyal medyada takip edin"
+  },
+  "BlogPage": {
+    "CannedMushroomsTitle": "Konserve Mantar",
+    "CannedMushroomsCaption": "Konserve Mantar Nasıl Kullanılır?",
+    "CannedLentilsTitle": "Konserve Mercimek",
+    "CannedLentilsCaption": "Konserve Mercimek Nasıl Kullanılır?",
+    "CannedChickpeasTitle": "Konserve Nohut",
+    "CannedChickpeasCaption": "Konserve Nohut Nasıl Kullanılır?"
+  },
+  "SliderCategory": {
+    "TypesOfJam": "Reçel Çeşitleri",
+    "TypesOfPaste": "Salça Çeşitleri",
+    "TypesOfPickles": "Turşu Çeşitleri"
+  },
+  "AboutPage": {
+    "JobPosition": "Genel Müdür",
+    "NameManager": "Ruhollah Jabraeili",
+    "TextManager1": "Amadeh Paz Gıda Ürünleri Üretim Grubu, Amadeh Paz, Bahaneh ve Mehran markaları altında faaliyet göstermekte olup, gıda sanayi üretim tesisi kurmak amacıyla Tahran İl Sanayi ve Maden Müdürlüğünden gerekli ön onayı aldıktan sonra 1989 yılında faaliyetlerine başlamıştır. Fabrika 1994 yılında tamamen faaliyete geçmiştir.",
+    "TextManager2": "Şirket, müşteri ihtiyaçlarını karşılamak amacıyla İran damak tadına uygun, yüksek kaliteli ürünler üretmeye başlamıştır ve her zaman İran ailelerinin güvenilir bir parçası olmuştur. Şirket, iç ve dış pazarlara girerek üretim izinleri, sağlık izinleri, standart belgeleri ve diğer çeşitli sertifika ve ruhsatları başarıyla elde etmiştir."
+  },
+  "Category": {
+    "Pickles": "Turşular",
+    "Jams": "Reçeller",
+    "Pastes": "Salçalar",
+    "Canned": "Konserve Ürünler"
+  },
+  "Product": {
+    "PintoBeans": "Konserve Barbunya",
+    "SweetCorn": "Konserve Tatlı Mısır",
+    "Peas": "Konserve Bezelye",
+    "CannedMushrooms": "Konserve Mantar",
+    "CannedLentils": "Konserve Mercimek",
+    "CannedChickpeas": "Konserve Nohut",
+    "StrawberryJam": "Çilek Reçeli",
+    "CherryJam": "Vişne Reçeli",
+    "SourCherryJam": "Kiraz Reçeli",
+    "PickledOlives": "Zeytin Turşusu",
+    "PickledCucumber": "Salatalık Turşusu",
+    "PickledCabbage": "Lahana Turşusu"
+  },
+  "CountPlusNumber": {
+    "TitleCompanies": "İş Ortaklarımız",
+    "DisCompanies": "Güvenilir şirketlerle iş birliği",
+    "TitleClient": "Müşteriler",
+    "DisClient": "Binlerce müşterinin bize duyduğu güven",
+    "TitleProduct": "Ürün Çeşitliliği",
+    "DisProduct": "Geniş ürün yelpazesi",
+    "TitleYear": "Yıllık Deneyim",
+    "DisYear": "Bu alanda deneyim ve uzmanlık"
   }
 }

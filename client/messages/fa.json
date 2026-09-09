@@ -24,26 +24,62 @@
     "PeasTitle": "کنسرو نخود فرنگی",
     "PeasSummary": " نخود سبز ترد و خوشرنگ، طعم بهار رو به آشپزخونه ات میاره",
     "PeasDescription": "این نخودفرنگیها در اوج تازگی فرآوری شدن تا هم رنگ سبز زیباشون حفظ بشه، هم بافت دانهدانشون له نشه. سرشار از ویتامین C و آهن، و برای سوپ نخودفرنگی، خوراک مرغ، سس بشامل یا حتی یه سالاد ساده، یه انتخاب سریع و مقویه ."
-  } ,
-  "Footer" : {
-    "CallFactory" : "شماره کارخانه",
-    "ManaggerBussines" : "مدیر ارشد بازرگانی" , 
-    "SellMangger" : "مدیر فروش",
-    "Address" : "آدرس",
-    "AddressText" : "تهران، رباط کریم، بلوار آزادگان، خیابان مفتح، پلاک 19",
-    "FallowUsInMedia" : "مارا در شبکه های اجتماعی دنبال کنید"
   },
-  "BlogPage" : {
-    "CannedMushroomsTitle" : "کنسرو قارچ",
-    "CannedMushroomsCaption" : "طرز استفاده کنسرو قارچ",
-    "CannedLentilsTitle" : "کنسرو عدس",
-    "CannedLentilsCaption" : "طرز استفاده کنسرو عدس",
-    "CannedChickpeasTitle" : "کنسرو نخود",
-    "CannedChickpeasCaption" : "طرز استفاده کنسرو نخود"
+  "Footer": {
+    "CallFactory": "شماره کارخانه",
+    "ManaggerBussines": "مدیر ارشد بازرگانی",
+    "SellMangger": "مدیر فروش",
+    "Address": "آدرس",
+    "AddressText": "تهران، رباط کریم، بلوار آزادگان، خیابان مفتح، پلاک 19",
+    "FallowUsInMedia": "مارا در شبکه های اجتماعی دنبال کنید"
   },
-   "SliderCategory": {
+  "BlogPage": {
+    "CannedMushroomsTitle": "کنسرو قارچ",
+    "CannedMushroomsCaption": "طرز استفاده کنسرو قارچ",
+    "CannedLentilsTitle": "کنسرو عدس",
+    "CannedLentilsCaption": "طرز استفاده کنسرو عدس",
+    "CannedChickpeasTitle": "کنسرو نخود",
+    "CannedChickpeasCaption": "طرز استفاده کنسرو نخود"
+  },
+  "SliderCategory": {
     "TypesOfJam": "انواع مربا",
     "TypesOfPaste": "انواع رب",
     "TypesOfPickles": "انواع ترشی"
+  },
+  "AboutPage": {
+    "JobPosition": "مدیر عامل",
+    "NameManager": "روح الله جبرائیلی",
+    "TextManager1": " گروه تولیدی فرآورده های غذایی آماده پز با نام تجاری (آماده پز،بهانه ومهران)که فعالیت خود را از سال ۱۳۶۸ با دریافت موافقت اصولی از اداره کل صنعت و معدن استان تهران جهت راه اندازی کارخانه تولیدی صنایع غذایی آغاز نموده است که کارخانه مربوطه در سال ۱۳۷۳ به بهره برداری کامل رسیده است",
+    "TextManager2": "در خصوص تامین نیاز مشتریان با تولید محصولات با کیفیت و مطابق با ذائقه ایرانی آغاز نموده است و همواره همراه همیشگی خانواده ایرانی می‌باشد لذا طی ورود به بازارهای داخلی و خارجی موفق به کسب گواهینامه های پروانه بهره برداری ، پروانه بهداشت ، استاندارد و … برای محصولات خود گردید ."
+  },
+  "Category": {
+    "Pickles": "ترشی ها",
+    "Jams": "مربا ها",
+    "Pastes": "رب ها",
+    "Canned": "کنسرو ها"
+  },
+  "Product": {
+    "PintoBeans": "کنسرو لوبیا",
+    "SweetCorn": "کنسرو ذرت",
+    "Peas": "کنسرو نخود فرنگی",
+    "CannedMushrooms": "کنسرو قارچ",
+    "CannedLentils": "کنسرو عدس",
+    "CannedChickpeas": "کنسرو نخود",
+    "StrawberryJam": "مربای توت فرنگی",
+    "CherryJam": "مربای آلبالو",
+    "SourCherryJam": "مربای گیلاس",
+    "PickledOlives": "ترشی زیتون",
+    "PickledCucumber": "ترشی خیار",
+    "PickledCabbage": "ترشی کلم"
+  },
+  "CountPlusNumber": {
+    "TitleCompanies": "شرکت های همکار",
+    "DisCompanies": "همکاری با مجموعه‌های معتبر",
+    "TitleClient": "مشتری",
+    "DisClient": "اعتماد هزاران مشتری به ما",
+    "TitleProduct": "محصول متنوع",
+    "DisProduct": "تنوع بالای محصولات" ,
+    "TitleYear": "سال تجربه",
+    "DisYear": "تجربه و تخصص در این حوزه"
   }
 }

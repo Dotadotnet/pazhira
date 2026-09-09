@@ -7,7 +7,7 @@
     "Home": "Home",
     "Products": "Products",
     "Blog": "Blog",
-    "VoiceClients": "Client Testimonials",
+    "VoiceClients": "Customer Voices",
     "Recruitment": "Careers",
     "AboutUs": "About Us",
     "CallUs": "Contact Us",
@@ -16,21 +16,70 @@
   },
   "SliderProduct": {
     "PintoBeansTitle": "Canned Pinto Beans",
-    "PintoBeansSummary": "Pre-cooked pinto beans, perfect for instant stews",
-    "PintoBeansDescription": "No more soaking and hours of cooking! These canned pinto beans are fully cooked with large, firm grains, rich in protein and fiber. Whether you're making bean stew, veggie burgers, or a protein salad, just open the can and use.",
+    "PintoBeansSummary": "Cooked and ready-to-eat beans for a quick and easy meal",
+    "PintoBeansDescription": "No need for soaking or hours of cooking! These canned beans contain large, fully cooked beans that are rich in protein and flavor. Whether you want to make a bean stew, a vegetarian burger, or a protein-rich salad, simply open the can and enjoy.",
     "SweetCornTitle": "Canned Sweet Corn",
-    "SweetCornSummary": "Sweet, crunchy corn kernels, fresh and tender",
-    "SweetCornDescription": "This canned corn is made from large, golden kernels that retain their natural sweet flavor. No added sugar or preservatives. Great for salads, corn soup, omelets, or as a simple side dish.",
+    "SweetCornSummary": "Sweet and crunchy corn kernels, fresh and delicious",
+    "SweetCornDescription": "This canned sweet corn is made from large, golden kernels that preserve their natural sweetness and flavor. With no added sugar or preservatives, it is perfect for salads, corn soup, omelets, or even as a simple side dish.",
     "PeasTitle": "Canned Green Peas",
-    "PeasSummary": "Crisp and colorful green peas, bringing a taste of spring to your kitchen",
-    "PeasDescription": "These green peas are processed at peak freshness to preserve their beautiful green color and firm texture. Rich in vitamin C and iron, they are a quick and nutritious choice for pea soup, chicken stew, béchamel sauce, or a simple salad."
+    "PeasSummary": "Crisp and vibrant green peas that bring the taste of spring to your kitchen",
+    "PeasDescription": "These green peas are processed at the peak of freshness to preserve their beautiful green color and firm texture. Rich in vitamin C and iron, they are a quick and nutritious choice for pea soup, chicken dishes, béchamel sauce, or even a simple salad."
   },
   "Footer": {
     "CallFactory": "Factory Phone",
-    "ManaggerBussines": "Head of Commercial Affairs",
+    "ManaggerBussines": "Senior Business Manager",
     "SellMangger": "Sales Manager",
     "Address": "Address",
-    "AddressText": "Tehran, Robat Karim, Azadegan Blvd, Mofatteh St, No. 19",
+    "AddressText": "Tehran, Robat Karim, Azadegan Boulevard, Mofatteh Street, No. 19",
     "FallowUsInMedia": "Follow us on social media"
+  },
+  "BlogPage": {
+    "CannedMushroomsTitle": "Canned Mushrooms",
+    "CannedMushroomsCaption": "How to Use Canned Mushrooms",
+    "CannedLentilsTitle": "Canned Lentils",
+    "CannedLentilsCaption": "How to Use Canned Lentils",
+    "CannedChickpeasTitle": "Canned Chickpeas",
+    "CannedChickpeasCaption": "How to Use Canned Chickpeas"
+  },
+  "SliderCategory": {
+    "TypesOfJam": "Types of Jam",
+    "TypesOfPaste": "Types of Tomato Paste",
+    "TypesOfPickles": "Types of Pickles"
+  },
+  "AboutPage": {
+    "JobPosition": "CEO",
+    "NameManager": "Ruhollah Jabraeili",
+    "TextManager1": "Amadeh Paz Food Products Manufacturing Group, operating under the brands Amadeh Paz, Bahaneh, and Mehran, began its activities in 1989 after obtaining the initial approval from the Tehran Province Department of Industry and Mining to establish a food manufacturing factory. The factory was fully operational by 1994.",
+    "TextManager2": "The company began its journey with a focus on meeting customer needs by producing high-quality products tailored to Iranian tastes. It has always been a trusted companion of Iranian families. Through entering both domestic and international markets, the company has successfully obtained various certifications and licenses, including manufacturing permits, health permits, standard certifications, and more."
+  },
+  "Category": {
+    "Pickles": "Pickles",
+    "Jams": "Jams",
+    "Pastes": "Tomato Pastes",
+    "Canned": "Canned Foods"
+  },
+  "Product": {
+    "PintoBeans": "Canned Pinto Beans",
+    "SweetCorn": "Canned Sweet Corn",
+    "Peas": "Canned Green Peas",
+    "CannedMushrooms": "Canned Mushrooms",
+    "CannedLentils": "Canned Lentils",
+    "CannedChickpeas": "Canned Chickpeas",
+    "StrawberryJam": "Strawberry Jam",
+    "CherryJam": "Cherry Jam",
+    "SourCherryJam": "Sour Cherry Jam",
+    "PickledOlives": "Pickled Olives",
+    "PickledCucumber": "Pickled Cucumbers",
+    "PickledCabbage": "Pickled Cabbage"
+  },
+  "CountPlusNumber": {
+    "TitleCompanies": "Partner Companies",
+    "DisCompanies": "Collaboration with reputable companies",
+    "TitleClient": "Clients",
+    "DisClient": "Trusted by thousands of customers",
+    "TitleProduct": "Product Variety",
+    "DisProduct": "A wide range of products",
+    "TitleYear": "Years of Experience",
+    "DisYear": "Experience and expertise in this field"
   }
 }

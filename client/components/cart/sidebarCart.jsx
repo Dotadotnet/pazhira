@@ -27,7 +27,7 @@ export default function Page({ className = "" }) {
                     setHash("cart")
                 }
             }} />
-            <Sidebar zIndex="-50" isOpen={open} setOpen={setOpen} >
+            <Sidebar zIndex="-5" isOpen={open} setOpen={setOpen} >
                 <div className="p-5 text-2xl" >{navbar("BagCart")}</div>
             </Sidebar>
 

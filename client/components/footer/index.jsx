@@ -3,7 +3,6 @@
 import React from "react";
 import EffectFotter from "./effect";
 import { motion } from "motion/react";
-
 import { IoLocationSharp, IoLogoLinkedin } from "react-icons/io5";
 import { FaInstagram, FaPhone, FaWhatsapp } from "react-icons/fa";
 import { TbBodyScan, TbBuildingFactory } from "react-icons/tb";

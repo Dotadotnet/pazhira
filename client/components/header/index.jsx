@@ -18,6 +18,7 @@ import { motion } from "motion/react";
 import ScrollInfinity from "../Utils/ScrollInfinity";
 import ButtonMenuMobile from "./items/buttonMenuMobile";
 import { itemsNav } from "./items";
+import CategoryMenu from "./items/categoryMenu";
 
 
 
@@ -27,7 +28,7 @@ const index = () => {
   return (
     <>
       <div className="fixed flex z-50 flex-col  justify-center m-5 sm:m-9 items-center left-0 right-0 top-0">
-        <div className=" w-full relative   dark:bg-gray-100/10 bg-black/5     shadow-gray-600  dark:shadow-gray-100 p-3 rounded-4xl ">
+        <div className=" w-full relative   dark:bg-gray-50/10 bg-black/5     shadow-gray-600  dark:shadow-gray-100 p-3 rounded-4xl ">
           <div className="size-full rounded-4xl backdrop-blur-md  -z-[10] absolute top-0 right-0"></div>
           <div className="w-full justify-between flex items-center" >
             <div className=" flex w-96">
@@ -103,6 +104,7 @@ const index = () => {
           </div>
         </div>
       </div>
+      <CategoryMenu />
     </>
   );
 };

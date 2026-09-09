@@ -19,6 +19,7 @@ const Sidebar = ({ isOpen, children, zIndex = "10" , text = "" }) => {
                 onClick={() => { setHash('') }}
             />
             <div
+            style={{ zIndex: String(parseInt(zIndex) + 10) }}
                 className={`fixed w-[calc(100%-2.5rem)] z-20 sm:w-92
                      top-0 ltr:left-0 rtl:right-0 h-[calc(100%-14rem)] 
                      sm:h-[calc(100%-8rem)] mt-24.5 sm:mt-28.5 rounded-4xl 
